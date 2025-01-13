@@ -7,6 +7,7 @@ import Highlights from "./components/highlights";
 import Services from "./components/services";
 import Ads from "./components/ads";
 import CalltoAction from "./components/calltoaction";
+import Download from "./components/download";
 
 export default function Home() {
   return (
@@ -19,6 +20,7 @@ export default function Home() {
       <Highlights />
       <Ads />
       <CalltoAction />
+      <Download />
     </div>
   );
 }
