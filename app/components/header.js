@@ -86,7 +86,7 @@ export default function PropertySearch() {
           </div>
         </div>
       </div>
-      <div className="w-full bg-white py-12 px-4 flex justify-center items-center gap-4">
+      <div className="hidden  w-full bg-white py-12 px-4 md:flex justify-center items-center gap-4">
         <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 rounded-lg text-center text-white">
           <Link href="/">
             <div className="flex justify-center items-center gap-2">

@@ -8,6 +8,7 @@ import Services from "./components/services";
 import Ads from "./components/ads";
 import CalltoAction from "./components/calltoaction";
 import Download from "./components/download";
+import Footer from "./components/footer";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
       <Ads />
       <CalltoAction />
       <Download />
+      <Footer />
     </div>
   );
 }
