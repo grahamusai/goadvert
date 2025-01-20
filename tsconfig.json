@@ -28,8 +28,13 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "app/login/page.js"  ],
-  "exclude": [
-    "node_modules"
-  ]
+, 
+"app/login/page.tsx", 
+"app/dashboard/page.js", 
+"app/layout.js", 
+"app/page.js"
+],
+"exclude": [
+  "node_modules"
+]
 }
