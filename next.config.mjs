@@ -1,12 +1,10 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-module.exports = {
-    eslint: {
-      // Warning: This allows production builds to successfully complete even if
-      // your project has ESLint errors.
-      ignoreDuringBuilds: true,
-    },
-  }
+const nextConfig = {
+  eslint: {
+    // Stop the build process if ESLint errors are found.
+    lintOnBuild: true,
+  },
+};
 
 export default nextConfig;
+
