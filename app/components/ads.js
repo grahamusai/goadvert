@@ -12,11 +12,10 @@ const Ads = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-10">
                     <ListingCard />
                     <ListingCard />
-                    <span className='hidden md:block'>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 px-10 mt-5">
                     <ListingCard />
                     <ListingCard />
-                    </span>
-                    
                 </div>
             </div>
 

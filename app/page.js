@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Navbar from "./components/navbar";
 import Header from "./components/header";
-import Topnav from "./components/topnav";
+import { CategoryTabs } from "./components/category-tabs";
 import Popular from "./components/popular";
 import Highlights from "./components/highlights";
 import Services from "./components/services";
@@ -13,9 +13,10 @@ import Footer from "./components/footer";
 export default function Home() {
   return (
     <div>
-      <Topnav />
+      
       <Navbar />
-      <Header />
+      <CategoryTabs />
+      
       <Popular />
       <Services />
       <Highlights />
