@@ -25,7 +25,7 @@ export const metadata = {
 export default function RootLayout(props) {
   const { children } = props;
   return (
-    <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="en">
         <body>
           {children}

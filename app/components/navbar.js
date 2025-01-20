@@ -15,7 +15,9 @@ import {
 import { Input } from "../../components/ui/input"
 
 export default function Navbar() {
+  const publishableKey = process.env.NEXT_PUBLIC_YOUR_KEY_NAME;
   return (
+    <ClerkProvider publishableKey={publishableKey}>
     <nav className="flex h-24 items-center max-w-6xl mx-auto justify-between gap-4  px-4 md:px-6">
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2">
@@ -102,5 +104,6 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+    </ClerkProvider>
   )
 }
