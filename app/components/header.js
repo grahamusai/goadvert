@@ -13,14 +13,12 @@ import { TbGridDots } from "react-icons/tb";
 export default function PropertySearch() {
   return (
     <section>
-      <div className="w-full bg-[#020B2D] py-32 px-4">
+      <div className="w-full bg-[#020B2D] py-12 px-4">
         <div className="container mx-auto max-w-6xl">
           <h1 className="text-center text-4xl md:text-6xl font-bold text-white mb-4">
             Buy, Sell or Rent
           </h1>
-          <p className="text-center text-gray-300 mb-8 max-w-3xl mx-auto">
-            Are you looking for an effective way to advertise your business, products, and services? By placing ads here website, businesses can reach a large audience quickly and cheaply.
-          </p>
+         
 
           <div className="bg-white rounded-lg p-4 shadow-lg">
             <div className="flex flex-col md:flex-row gap-4">
@@ -86,78 +84,7 @@ export default function PropertySearch() {
           </div>
         </div>
       </div>
-      <div className="hidden  w-full bg-white py-12 px-4 md:flex justify-center items-center gap-4">
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 rounded-lg text-center text-white">
-          <Link href="/">
-            <div className="flex justify-center items-center gap-2">
-              <FaHouse /> |
-              <h3 className="">
-                Properties
-              </h3>
-            </div>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 rounded-lg text-center text-white">
-          <Link href="/">
-            <div className="flex justify-center items-center gap-2">
-              <FaCar /> |
-              <h3 className="">
-                Vehicles
-              </h3>
-            </div>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 rounded-lg text-center text-white">
-          <Link href="/">
-            <div className="flex justify-center items-center gap-2">
-              <FaTruckMoving /> |
-              <h3 className="">
-                Logistics
-              </h3>
-            </div>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 rounded-lg text-center text-white">
-          <Link href="/">
-            <div className="flex justify-center items-center gap-2">
-              <FaHotel /> |
-              <h3 className="">
-                Hotels
-              </h3>
-            </div>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 rounded-lg text-center text-white">
-          <Link href="/">
-            <div className="flex justify-center items-center gap-2">
-              <FaMoneyBillTrendUp /> |
-              <h3 className="">
-                Businesses
-              </h3>
-            </div>
-          </Link>
-        </div>
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-4 rounded-lg text-center text-white">
-          <Link href="/">
-            <div className="flex justify-center items-center gap-2">
-              <MdBusinessCenter /> |
-              <h3 className="">
-                Jobs
-              </h3>
-            </div>
-          </Link>
-        </div>
-        <div className="bg-gray-300 p-4 rounded-lg text-center text-slate-700">
-          <Link href="/">
-            <div className="flex justify-center items-center gap-2">
-              <TbGridDots /> |
-              <h3 className="">
-                Other
-              </h3>
-            </div>
-          </Link>
-        </div>
-      </div>
+      
     </section>
 
   )
