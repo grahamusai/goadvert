@@ -1,5 +1,4 @@
 "use client"
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 import { Search } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
@@ -15,7 +14,6 @@ import {
 import { Input } from "../../components/ui/input"
 
 export default function Navbar() {
-  const publishableKey = process.env.NEXT_PUBLIC_YOUR_KEY_NAME;
   return (
  
     <nav className="flex h-24 items-center max-w-6xl mx-auto justify-between gap-4  px-4 md:px-6">
