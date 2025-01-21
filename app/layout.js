@@ -25,14 +25,13 @@ export const metadata = {
 export default function RootLayout(props) {
   const { children } = props;
   return (
-    <ClerkProvider publishableKey={publishableKey}>
+
       <html lang="en">
         <body>
           {children}
           <FloatingNavbar />
         </body>
       </html>
-    </ClerkProvider>
   );
 }
 
