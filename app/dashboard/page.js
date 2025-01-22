@@ -1,9 +1,13 @@
-import React from 'react'
+import { UserSidebar } from "./components/sidebar-app"
+import { SidebarProvider } from "../../components/ui/sidebar"
+import Navbar from "../components/navbar"
 
-const Dashboard = () => {
+export default function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <>
+      <Navbar />
+         <UserSidebar />
+    </>
+
   )
 }
-
-export default Dashboard

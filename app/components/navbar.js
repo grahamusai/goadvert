@@ -2,7 +2,9 @@
 import { Search } from 'lucide-react'
 import Image from "next/image"
 import Link from "next/link"
-
+import { useState, useEffect } from 'react'
+import pb from '../../lib/pocketbase'
+import { useRouter } from 'next/navigation'
 
 import { Button } from "../../components/ui/button";
 import {
@@ -14,8 +16,25 @@ import {
 import { Input } from "../../components/ui/input"
 
 export default function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is logged in
+    setIsLoggedIn(pb.authStore.isValid)
+
+    // Listen to auth state changes
+    pb.authStore.onChange((auth) => {
+      setIsLoggedIn(auth.isValid)
+    })
+  }, [])
+
+  const handleLogout = async () => {
+    pb.authStore.clear()
+    router.push('/')
+  }
+
   return (
- 
     <nav className="flex h-24 items-center max-w-6xl mx-auto justify-between gap-4  px-4 md:px-6">
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2">
@@ -89,8 +108,18 @@ export default function Navbar() {
           </DropdownMenuContent>
         </DropdownMenu>
         <div className="flex items-center gap-2">
-          Login
-         
+          {isLoggedIn ? (
+            <button 
+              onClick={handleLogout}
+              className="text-sm text-red-500 hover:text-red-600"
+            >
+              Logout
+            </button>
+          ) : (
+            <a href="/login" className="text-sm hover:text-primary">
+              Login
+            </a>
+          )}
         </div>
       </div>
     </nav>
