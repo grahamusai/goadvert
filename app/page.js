@@ -9,6 +9,7 @@ import Ads from "./components/ads";
 import CalltoAction from "./components/calltoaction";
 import Download from "./components/download";
 import Footer from "./components/footer";
+import { FloatingNavbar } from "./components/floatingNav";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <CalltoAction />
       <Download />
       <Footer />
+      <FloatingNavbar />
     </div>
   );
 }

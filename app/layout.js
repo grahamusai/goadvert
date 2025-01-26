@@ -29,7 +29,7 @@ export default function RootLayout(props) {
       <html lang="en">
         <body>
           {children}
-          <FloatingNavbar />
+          
         </body>
       </html>
   );

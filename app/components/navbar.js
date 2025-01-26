@@ -39,7 +39,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-14 w-14 overflow-hidden  ">
-            <Image
+              <Image
               src="/images/Logo.png"
               alt="Logo"
               className="object-cover"

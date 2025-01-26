@@ -26,7 +26,7 @@ export function UserSidebar() {
 
       <aside id="default-sidebar" className="fixed top-0 left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
         <div className="h-full px-3 py-20 mt-28 mx-5 rounded-2xl overflow-y-auto bg-[#1C274C] dark:bg-gray-800">
-          <h3 className="text-slate-200 font-bold mb-10">{user ? `Hello ${user.username}` : 'Hello Guest'}</h3>
+          <h3 className="text-slate-200 font-bold mb-10">Hello {pb.authStore.model?.name || "Guest"}</h3>
           <ul className="space-y-2 font-medium">
             <li>
               <a href="#" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
