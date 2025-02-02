@@ -28,8 +28,8 @@ export function FloatingNavbar() {
           <MessageCircle className="w-6 h-6" />
         </Link>
         <Link
-          href="/new"
-          className={`${pathname === "/new" ? "text-blue-500" : "text-gray-600"} hover:text-blue-500 transition-colors`}
+          href="/dashboard/new"
+          className={`${pathname === "/dashboard/new" ? "text-blue-500" : "text-gray-600"} hover:text-blue-500 transition-colors`}
         >
           <PlusCircle className="w-6 h-6" />
         </Link>

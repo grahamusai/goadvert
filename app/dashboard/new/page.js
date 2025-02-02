@@ -4,114 +4,189 @@ import pb from '../../../lib/pocketbase';
 import { UserSidebar } from '../components/sidebar-app';
 import Navbar from '../../components/navbar';
 
-export default function New({ userId }) {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [image, setImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
+const LISTING_TYPES = [
+  'Properties',
+  'Cars',
+  'Jobs',
+  'hotels',
+  'Logostics',
+  'Other'
+];
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(file);
-            // Create a preview URL for the selected image
-            const previewUrl = URL.createObjectURL(file);
-            setImagePreview(previewUrl);
-        }
-    };
+export default function New() {
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    type: LISTING_TYPES[0],
+    price: '',
+  });
+  const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-        try {
-            if (!pb.authStore.isValid) {
-                throw new Error('You must be logged in to create a post');
-            }
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
-            // Create FormData object to handle file upload
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('description', description);
-            formData.append('user', userId);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      // Create form data for the request
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('type', formData.type);
+      formDataToSend.append('price', parseFloat(formData.price));
+      if (image) {
+        formDataToSend.append('image', image);
+      }
 
-            // Only append image if one was selected
-            if (image) {
-                formData.append('image', image);
-            }
+      // Using the imported pb instance
+      await pb.collection('posts').create(formDataToSend);
+      
+      // Reset form
+      setFormData({
+        name: '',
+        description: '',
+        type: LISTING_TYPES[0],
+        price: '',
+      });
+      setImage(null);
+      setPreview('');
+      setSuccess(true);
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err) {
+      setError(err.message || 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            // Create the post with the FormData
-            await pb.collection('posts').create(formData);
-
-            // Clean up the preview URL
-            if (imagePreview) {
-                URL.revokeObjectURL(imagePreview);
-            }
-
-            alert('Ad created successfully!');
-
-            // Reset form
-            setTitle('');
-            setDescription('');
-            setImage(null);
-            setImagePreview(null);
-        } catch (error) {
-            console.error('Error creating ad:', error);
-            alert(error.message || 'Failed to create ad.');
-        }
-    };
-
-    return (
-        <>
-            <Navbar />
-            <UserSidebar />
-            <div className='p-4 sm:ml-64'>
-                <form onSubmit={handleSubmit} className='flex flex-col max-w-3xl'>
-                        <label className="text-lg font text-slate-800 py-2">Post Name</label>
-                        <input
-                            type="text"
-                            placeholder="2 Bed Apartment"
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                            required
-                            className='border-2 border-black py-2 rounded-md px-2 mb-5'
-                        />
-                    
-                        <label className="text-lg font text-slate-800 py-2">Description</label>
-                        <textarea
-                            placeholder="Description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                            className='border-2 border-black py-2 rounded-md px-2 mb-5'
-                        />
-
-                    <label className="text-lg font text-slate-800 py-2">Feature Image</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className='mb-3'
-                    />
-
-                    {imagePreview && (
-                        <div className="mb-5">
-                            <p className="text-sm text-slate-600 mb-2">Preview:</p>
-                            <img
-                                src={imagePreview}
-                                alt="Preview"
-                                className="max-w-md h-auto rounded-lg shadow-sm"
-                            />
-                        </div>
-                    )}
-
-                    <button
-                        type="submit"
-                        className="bg-black px-10 py-2 text-white mt-5 hover:bg-gray-800 transition-colors"
-                    >
-                        Create Ad
-                    </button>
-                </form>
-            </div>
-        </>
-    );
+  return (
+    <>
+      <Navbar />
+      
+        <UserSidebar />
+        <div className="flex">
+        <main className="flex-1 p-6">
+          <div className="max-w-2xl mx-auto">
+            <h1 className="text-2xl font-bold mb-6">Add New LISTING</h1>
+            
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                {error}
+              </div>
+            )}
+            
+            {success && (
+              <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                LISTING added successfully!
+              </div>
+            )}
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block mb-2">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              
+              <div>
+                <label className="block mb-2">Description</label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full p-2 border rounded h-32"
+                />
+              </div>
+              
+              <div>
+                <label className="block mb-2">Type</label>
+                <select
+                  name="type"
+                  value={formData.type}
+                  onChange={handleInputChange}
+                  className="w-full p-2 border rounded"
+                >
+                  {LISTING_TYPES.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block mb-2">Price</label>
+                <input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                  required
+                  min="0"
+                  step="0.01"
+                  className="w-full p-2 border rounded"
+                />
+              </div>
+              
+              <div>
+                <label className="block mb-2">Feature Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full p-2 border rounded"
+                />
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="mt-2 max-w-xs rounded"
+                  />
+                )}
+              </div>
+              
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full p-2 text-white rounded ${
+                  loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
+                }`}
+              >
+                {loading ? 'Adding LISTING...' : 'Add LISTING'}
+              </button>
+            </form>
+          </div>
+        </main>
+      </div>
+    </>
+  );
 }
