@@ -29,7 +29,7 @@ export function UserSidebar() {
           <h3 className="text-slate-200 font-bold mb-10">Hello {pb.authStore.model?.name || "Guest"}</h3>
           <ul className="space-y-2 font-medium">
             <li>
-              <a href="#" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
+              <a href="/dashboard" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
                 <MdSpaceDashboard />
                 <span className="ms-3">Dashboard</span>
               </a>

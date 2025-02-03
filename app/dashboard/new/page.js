@@ -5,10 +5,10 @@ import { UserSidebar } from '../components/sidebar-app';
 import Navbar from '../../components/navbar';
 
 const LISTING_TYPES = [
-  'Properties',
-  'Cars',
-  'Jobs',
-  'hotels',
+  'Property',
+  'Car',
+  'Job',
+  'hotel',
   'Logostics',
   'Other'
 ];
@@ -89,7 +89,7 @@ export default function New() {
         <div className="flex">
         <main className="flex-1 p-6">
           <div className="max-w-2xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6">Add New LISTING</h1>
+            <h1 className="text-2xl font-bold mb-6">Add New Listing</h1>
             
             {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -112,7 +112,7 @@ export default function New() {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded active:outline-none"
                 />
               </div>
               

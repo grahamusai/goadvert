@@ -34,6 +34,24 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      // Initiate Google auth flow
+      const authData = await pb.collection('users').authWithOAuth2({ provider: 'google' });
+      
+      if (authData) {
+        router.push('/dashboard');
+      }
+    } catch (err) {
+      setError('Google authentication failed');
+      console.error('Google auth error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Left side with logo */}
@@ -119,15 +137,20 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
-              <Button variant="outline" className="w-full">
-                {/* Add Google SVG */}
-              </Button>
-              <Button variant="outline" className="w-full">
-                <Apple className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" className="w-full">
-                <Facebook className="h-4 w-4" fill="#1877F2" />
+            <div className="mt-4">
+              <Button
+                type="button"
+                className="w-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2"
+                onClick={handleGoogleLogin}
+                disabled={loading}
+              >
+                <Image
+                  src="/images/google.svg"
+                  alt="Google"
+                  width={20}
+                  height={20}
+                />
+                Sign in with Google
               </Button>
             </div>
           </div>
