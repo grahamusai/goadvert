@@ -9,7 +9,7 @@ const LISTING_TYPES = [
   'Car',
   'Job',
   'hotel',
-  'Logostics',
+  'Logistics',
   'Other'
 ];
 
@@ -48,12 +48,20 @@ export default function New() {
     setError('');
     
     try {
+      // Check if user is authenticated
+      const authData = pb.authStore.model;
+      if (!authData) {
+        throw new Error('You must be logged in to create a post');
+      }
+
       // Create form data for the request
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('type', formData.type);
       formDataToSend.append('price', parseFloat(formData.price));
+      formDataToSend.append('user', authData.id); // Associate post with user ID
+      formDataToSend.append('username', authData.username); // Store username with post
       if (image) {
         formDataToSend.append('image', image);
       }

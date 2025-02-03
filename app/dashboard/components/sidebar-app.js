@@ -9,15 +9,29 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { FaSignOutAlt } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { FaBoxArchive } from "react-icons/fa6";
+import { FaMoneyBillWave } from "react-icons/fa";
 
 export function UserSidebar() {
 
   const [user, setUser] = useState(null)
-  // Get the current user's name
+  const [postsCount, setPostsCount] = useState(0)
+
   useEffect(() => {
     const authData = pb.authStore.model
     if (authData) {
       setUser(authData)
+      // Fetch user's posts count
+      const fetchPostsCount = async () => {
+        try {
+          const records = await pb.collection('posts').getList(1, 1, {
+            filter: `user = "${authData.id}"`,
+          });
+          setPostsCount(records.totalItems);
+        } catch (error) {
+          console.error('Error fetching posts count:', error);
+        }
+      };
+      fetchPostsCount();
     }
   }, [])
 
@@ -47,7 +61,7 @@ export function UserSidebar() {
 
                 <FaFileAlt />
                 <span className="flex-1 ms-3 whitespace-nowrap">My Ads</span>
-                <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">0</span>
+                <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{postsCount}</span>
               </a>
             </li>
             <li>
@@ -58,7 +72,7 @@ export function UserSidebar() {
             </li>
             <li>
               <a href="#" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
-                <FaHeart />
+                <FaMoneyBillWave />
                 <span className="flex-1 ms-3 whitespace-nowrap">Plans & Billing </span>
               </a>
             </li>
@@ -84,7 +98,7 @@ export function UserSidebar() {
           <div className="flex items-center justify-center gap-5">
             <div className="w-full md:w-1/3 bg-[#E8F7FF] rounded-md p-5 flex items-center justify-between">
               <div>
-              <h2 className="text-2xl font-bold">20</h2>
+              <h2 className="text-2xl font-bold">{postsCount}</h2>
               <p>Posted Ads</p>
               </div>
               <div className="text-4xl text-blue-400 bg-white/50 p-2 rounded-md">

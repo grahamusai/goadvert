@@ -57,7 +57,7 @@ export default function Navbar() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             <DropdownMenuItem>English</DropdownMenuItem>
-            <DropdownMenuItem>Spanish</DropdownMenuItem>
+            <DropdownMenuItem>Deutsch</DropdownMenuItem>
             <DropdownMenuItem>French</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -104,7 +104,7 @@ export default function Navbar() {
           <DropdownMenuContent align="end">
             <DropdownMenuItem>USD</DropdownMenuItem>
             <DropdownMenuItem>EUR</DropdownMenuItem>
-            <DropdownMenuItem>GBP</DropdownMenuItem>
+            <DropdownMenuItem>CHF</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
         <div className="flex items-center gap-2">
