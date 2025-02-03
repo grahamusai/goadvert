@@ -1,39 +1,36 @@
 'use client'
 
-import { UserSidebar } from "./components/sidebar-app"
-import { SidebarProvider } from "../../components/ui/sidebar"
-import Navbar from "../components/navbar"
+import { UserSidebar } from "../components/sidebar-app"
+import Navbar from "../../components/navbar"
 import { useEffect, useState } from "react"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../components/ui/card"
 import Image from "next/image"
-import pb from "../../lib/pocketbase"
+import  pb  from "../../../lib/pocketbase"
 
-export default function Dashboard() {
-  const [userPosts, setUserPosts] = useState([])
+export default function Listings() {
+    const [userPosts, setUserPosts] = useState([])
 
-  useEffect(() => {
-    const fetchUserPosts = async () => {
-      try {
-        const userId = pb.authStore.model.id
-        const records = await pb.collection('posts').getList(1, 50, {
-          filter: `user = "${userId}"`,
-          sort: '-created'
-        });
-        setUserPosts(records.items)
-      } catch (error) {
-        console.error('Error fetching posts:', error)
-      }
-    }
-
-    if (pb.authStore.isValid) {
-      fetchUserPosts()
-    }
-  }, [])
-
+    useEffect(() => {
+        const fetchUserPosts = async () => {
+          try {
+            const userId = pb.authStore.model.id
+            const records = await pb.collection('posts').getList(1, 50, {
+              filter: `user = "${userId}"`,
+              sort: '-created'
+            });
+            setUserPosts(records.items)
+          } catch (error) {
+            console.error('Error fetching posts:', error)
+          }
+        }
+    
+        if (pb.authStore.isValid) {
+          fetchUserPosts()
+        }
+      }, [])
   return (
-    <>
-      <Navbar />
-
+    <div>
+        <Navbar />
       <UserSidebar />
       <div className="flex max-w-6xl mx-auto ml-64">
         <main className="flex-1 p-6">
@@ -63,6 +60,6 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
-    </>
-  )
-}
+    </div>
+  );
+};

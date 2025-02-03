@@ -1,7 +1,7 @@
 "use client"
 
 import { Home, MessageCircle, PlusCircle, Bell, User } from "lucide-react"
-import { MdSpaceDashboard } from "react-icons/md";
+import { RiDashboard3Fill } from "react-icons/ri";
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
@@ -19,7 +19,7 @@ export function FloatingNavbar() {
           href="/dashboard"
           className={`${pathname === "/" ? "text-blue-500" : "text-gray-600"} hover:text-blue-500 transition-colors`}
         >
-          <MdSpaceDashboard className="w-6 h-6" />
+          <RiDashboard3Fill className="w-6 h-6" />
         </Link>
         <Link
           href="/messages"

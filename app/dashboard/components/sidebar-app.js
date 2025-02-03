@@ -57,7 +57,7 @@ export function UserSidebar() {
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
+              <a href="/dashboard/listings" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
 
                 <FaFileAlt />
                 <span className="flex-1 ms-3 whitespace-nowrap">My Ads</span>
