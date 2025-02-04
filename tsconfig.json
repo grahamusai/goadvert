@@ -33,7 +33,7 @@
 "app/dashboard/page.js", 
 "app/layout.js", 
 "app/page.js"
-, "app/dashboard/new/page.js", "app/dashboard/listings/page.js"],
+, "app/dashboard/new/page.js", "app/dashboard/listings/page.js", "app/components/carCard.js"],
 "exclude": [
   "node_modules"
 ]

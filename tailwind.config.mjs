@@ -1,7 +1,9 @@
 /** @type {import('tailwindcss').Config} */
+const {heroui} = require("@heroui/theme");
 export default {
     darkMode: ["class"],
     content: [
+		"./node_modules/@heroui/theme/dist/components/(button|ripple|spinner).js",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -67,5 +69,7 @@ export default {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: 
+  
+  [require("tailwindcss-animate"), heroui()],
 };

@@ -1,14 +1,7 @@
 import { Button } from "../../components/ui/button"
 import { Input } from "../../components/ui/input"
 import { Search } from 'lucide-react'
-import Link from "next/link";
-import { FaHouse } from "react-icons/fa6";
-import { FaCar } from "react-icons/fa";
-import { FaTruckMoving } from "react-icons/fa6";
-import { FaHotel } from "react-icons/fa";
-import { MdBusinessCenter } from "react-icons/md";
-import { FaMoneyBillTrendUp } from "react-icons/fa6";
-import { TbGridDots } from "react-icons/tb";
+
 
 export default function PropertySearch() {
   return (
@@ -24,18 +17,13 @@ export default function PropertySearch() {
             <div className="flex flex-col md:flex-row gap-4">
               {/* Toggle Buttons */}
               <div className="flex rounded-md overflow-hidden border">
-                <Button
-                  variant="ghost"
-                  className="flex-1 rounded-none bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Rent
-                </Button>
+              <Button color="primary">Button</Button>
                 <div className="w-px bg-border" />
                 <Button
                   variant="ghost"
                   className="flex-1 rounded-none hover:bg-accent"
                 >
-                  Sell
+                  Services
                 </Button>
               </div>
 
