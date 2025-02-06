@@ -22,7 +22,7 @@ const CarCard = () => {
           mileage: 5000,
           fuelType: "Electric",
           transmission: "Automatic",
-          imageUrl: "/images/camry.jpeg",
+          imageUrl: "/images/camry.webp",
         },
         {
           make: "Ford",

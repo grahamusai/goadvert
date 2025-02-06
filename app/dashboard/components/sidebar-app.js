@@ -2,14 +2,20 @@
 import * as React from "react"
 import { useState, useEffect } from "react";
 import pb from '../../../lib/pocketbase' // Import pocketbase instance
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../../../components/ui/popover"
+
 import { FaHeart } from "react-icons/fa";
-import { FaFileAlt } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaCirclePlus } from "react-icons/fa6";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaCar, FaFileAlt } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { FaBoxArchive } from "react-icons/fa6";
 import { FaMoneyBillWave } from "react-icons/fa";
+import { LuBuilding2 } from "react-icons/lu";
 
 export function UserSidebar() {
 
@@ -50,11 +56,26 @@ export function UserSidebar() {
             </li>
 
             <li>
-              <a href="/dashboard/new" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
-                <FaCirclePlus />
-                <span className="flex-1 ms-3 whitespace-nowrap">Post an Ad</span>
+              
+              <Popover>
+                <PopoverTrigger className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group"> <FaCirclePlus /><span className="flex-1 ms-3 whitespace-nowrap">Post an Ad</span></PopoverTrigger>
+                <PopoverContent className="w-80 bg- ">
+                  <a href="/dashboard/property" className="hover:bg-slate-900 dark:hover:bg-gray-700 group">
+                    <div className=" flex items-center text-slate-300 ">
+                      <LuBuilding2 />
+                      <h2 className="pl-3">Property</h2>
+                    </div>
+                  </a>
 
-              </a>
+                  <hr className="my-3" />
+                  <a href="/dashboard/vehicle">
+                    <div className=" flex items-center text-slate-300 ">
+                      <FaCar />
+                      <h2 className="pl-3">Vehicle</h2>
+                    </div>
+                  </a>
+                </PopoverContent>
+              </Popover>
             </li>
             <li>
               <a href="/dashboard/listings" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
@@ -98,8 +119,8 @@ export function UserSidebar() {
           <div className="flex items-center justify-center gap-5">
             <div className="w-full md:w-1/3 bg-[#E8F7FF] rounded-md p-5 flex items-center justify-between">
               <div>
-              <h2 className="text-2xl font-bold">{postsCount}</h2>
-              <p>Posted Ads</p>
+                <h2 className="text-2xl font-bold">{postsCount}</h2>
+                <p>Posted Ads</p>
               </div>
               <div className="text-4xl text-blue-400 bg-white/50 p-2 rounded-md">
                 <FaFileAlt />
@@ -107,8 +128,8 @@ export function UserSidebar() {
             </div>
             <div className="w-full md:w-1/3 bg-[#E8F7FF] rounded-md p-5 flex items-center justify-between">
               <div>
-              <h2 className="text-2xl font-bold">20</h2>
-              <p>Favourite Ads</p>
+                <h2 className="text-2xl font-bold">20</h2>
+                <p>Favourite Ads</p>
               </div>
               <div className="text-4xl text-green-500 bg-white/50 p-2 rounded-md">
                 <FaHeart />
@@ -116,14 +137,14 @@ export function UserSidebar() {
             </div>
             <div className="w-full md:w-1/3 bg-[#FFE5E5] rounded-md p-5 flex items-center justify-between">
               <div>
-              <h2 className="text-2xl font-bold">20</h2>
-              <p>Expired Ads</p>
+                <h2 className="text-2xl font-bold">20</h2>
+                <p>Expired Ads</p>
               </div>
               <div className="text-4xl text-red-400 bg-white/50 p-2 rounded-md">
                 <FaBoxArchive />
               </div>
             </div>
-           
+
 
 
           </div>

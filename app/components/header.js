@@ -7,17 +7,22 @@ export default function PropertySearch() {
   return (
     <section>
       <div className="w-full bg-[#020B2D] py-12 px-4">
-        <div className="container mx-auto max-w-6xl">
+        <div className="container mx-auto max-w-7xl ">
           <h1 className="text-center text-4xl md:text-6xl font-bold text-white mb-4">
-            Buy, Sell or Rent
+            Rent, Buy, Sell
           </h1>
-         
+
 
           <div className="bg-white rounded-lg p-4 shadow-lg">
             <div className="flex flex-col md:flex-row gap-4">
               {/* Toggle Buttons */}
               <div className="flex rounded-md overflow-hidden border">
-              <Button color="primary">Button</Button>
+                <Button
+                  variant="ghost"
+                  className="flex-1 rounded-none bg-primary text-primary-foreground hover:bg-primary/90"
+                >
+                  Products
+                </Button>
                 <div className="w-px bg-border" />
                 <Button
                   variant="ghost"
@@ -53,7 +58,7 @@ export default function PropertySearch() {
                 {/* Rooms */}
                 <Input
                   type="text"
-                  placeholder="Rooms From"
+                  placeholder="Product/Service"
                   className="md:col-span-1"
                 />
 
@@ -72,7 +77,7 @@ export default function PropertySearch() {
           </div>
         </div>
       </div>
-      
+
     </section>
 
   )

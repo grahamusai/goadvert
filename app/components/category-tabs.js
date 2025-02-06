@@ -19,9 +19,10 @@ export function CategoryTabs() {
           <TabsTrigger value="all" className="w-full bg-blue-500 text-white"><BiCategory />&nbsp;All categories</TabsTrigger>
           <TabsTrigger value="properties" className="w-full "><LuBuilding2 />&nbsp;Properties</TabsTrigger>
           <TabsTrigger value="cars"><FaCar />&nbsp;Cars</TabsTrigger>
-          <TabsTrigger value="logistics"><LuTruck />&nbsp;Logistics</TabsTrigger>
           <TabsTrigger value="hotels"><LuHotel />&nbsp;Hotels</TabsTrigger>
           <TabsTrigger value="jobs"><LuBriefcase />&nbsp;Jobs</TabsTrigger>
+          <TabsTrigger value="electronics"><LuBriefcase />&nbsp;Electronics</TabsTrigger>
+          <TabsTrigger value="logistics"><LuTruck />&nbsp;Logistics</TabsTrigger>
         </TabsList>
 
         {/* Content */}
@@ -36,6 +37,7 @@ export function CategoryTabs() {
         <TabsContent value="logistics">Logistics</TabsContent>
         <TabsContent value="hotels">Hotels</TabsContent>
         <TabsContent value="jobs">Jobs</TabsContent>
+        <TabsContent value="electronics">Electronics</TabsContent>
       </Tabs>
 
     </>
