@@ -33,7 +33,7 @@
 "app/dashboard/page.js", 
 "app/layout.js", 
 "app/page.js"
-, "app/dashboard/new/page.js", "app/dashboard/listings/page.js", "app/components/carCard.js"],
+, "app/dashboard/new/page.js", "app/dashboard/listings/page.js", "app/components/carCard.jsx", "app/components/card.jsx", "components/ui/card.jsx", "app/components/ads.jsx", "app/components/bentoGrid.jsx", "app/components/calltoaction.jsx", "app/components/payment-modal.jsx"],
 "exclude": [
   "node_modules"
 ]

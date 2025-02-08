@@ -59,7 +59,7 @@ export function UserSidebar() {
               
               <Popover>
                 <PopoverTrigger className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group"> <FaCirclePlus /><span className="flex-1 ms-3 whitespace-nowrap">Post an Ad</span></PopoverTrigger>
-                <PopoverContent className="w-80 bg- ">
+                <PopoverContent className="w-80 bg-slate-800 ">
                   <a href="/dashboard/property" className="hover:bg-slate-900 dark:hover:bg-gray-700 group">
                     <div className=" flex items-center text-slate-300 ">
                       <LuBuilding2 />
