@@ -72,18 +72,18 @@ export default function Navbar() {
       </div>
       <div className="flex items-center gap-4">
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="sm">
+          <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
             Buy
-          </Button>
-          <Button variant="ghost" size="sm">
+          </Link>
+          <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
             Sell
-          </Button>
-          <Button variant="ghost" size="sm">
+          </Link>
+          <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
             Rent
-          </Button>
-          <Button variant="ghost" size="sm">
+          </Link>
+          <Link href="/login" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'> 
             Contact Us
-          </Button>
+          </Link>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

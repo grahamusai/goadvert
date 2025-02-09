@@ -68,12 +68,15 @@ export default function New() {
             formDataToSend.append('price', parseFloat(formData.price));
             formDataToSend.append('user', authData.id); // Associate post with user ID
             formDataToSend.append('username', authData.username); // Store username with post
+            formDataToSend.append('city', formData.city);
+            formDataToSend.append('country', formData.country);
+            formDataToSend.append('term', formData.term);
             if (image) {
                 formDataToSend.append('image', image);
             }
 
             // Using the imported pb instance
-            await pb.collection('posts').create(formDataToSend);
+            await pb.collection('properties').create(formDataToSend);
 
             // Reset form
             setFormData({
@@ -81,6 +84,9 @@ export default function New() {
                 description: '',
                 type: LISTING_TYPES[0],
                 price: '',
+                city: '',
+                country: '',
+                term: '',
             });
             setImage(null);
             setPreview('');
@@ -113,7 +119,7 @@ export default function New() {
 
                         {success && (
                             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                                LISTING added successfully!
+                                Property added successfully!
                             </div>
                         )}
 
@@ -164,8 +170,8 @@ export default function New() {
                                     <label className="block mb-2">City</label>
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        name="city"
+                                        value={formData.city}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
@@ -175,8 +181,8 @@ export default function New() {
                                     <label className="block mb-2">Country</label>
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        name="country"
+                                        value={formData.country}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"

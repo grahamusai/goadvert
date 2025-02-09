@@ -28,10 +28,14 @@ const FUEL_TYPES = [
 
 export default function New() {
     const [formData, setFormData] = useState({
-        name: '',
+        title: '',
         description: '',
-        type: LISTING_TYPES[0],
+        make: '',
+        model: '',
+        year: '',
         price: '',
+        mileage: '',
+        type: LISTING_TYPES[0],
         transmission: TRANSMISSIONS[0],
         fuelType: FUEL_TYPES[0],
     });
@@ -71,25 +75,35 @@ export default function New() {
 
             // Create form data for the request
             const formDataToSend = new FormData();
-            formDataToSend.append('name', formData.name);
+            formDataToSend.append('title', formData.title);
             formDataToSend.append('description', formData.description);
-            formDataToSend.append('type', formData.type);
+            formDataToSend.append('make', formData.make);
+            formDataToSend.append('model', formData.model);
+            formDataToSend.append('year', formData.year);
             formDataToSend.append('price', parseFloat(formData.price));
+            formDataToSend.append('mileage', formData.mileage);
+            formDataToSend.append('transmission', formData.transmission);
+            formDataToSend.append('fuelType', formData.fuelType);
             formDataToSend.append('user', authData.id); // Associate post with user ID
-            formDataToSend.append('username', authData.username); // Store username with post
             if (image) {
                 formDataToSend.append('image', image);
             }
 
             // Using the imported pb instance
-            await pb.collection('posts').create(formDataToSend);
+            await pb.collection('cars').create(formDataToSend);
 
             // Reset form
             setFormData({
-                name: '',
                 description: '',
-                type: LISTING_TYPES[0],
+                title: '',
+                make: '',
+                model: '',
+                year: '',
                 price: '',
+                mileage: '',
+                transmission: TRANSMISSIONS[0],
+                fuelType: FUEL_TYPES[0],
+                user: authData.id,
             });
             setImage(null);
             setPreview('');
@@ -122,7 +136,7 @@ export default function New() {
 
                         {success && (
                             <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                                LISTING added successfully!
+                                Vehicle added successfully!
                             </div>
                         )}
 
@@ -132,8 +146,8 @@ export default function New() {
                                     <label className="block mb-2">Title</label>
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        name="title"
+                                        value={formData.title}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
@@ -164,7 +178,7 @@ export default function New() {
                                     value={formData.description}
                                     onChange={handleInputChange}
                                     required
-                                    className="w-full p-2 border rounded h-12s"
+                                    className="w-full p-2 border rounded h-32"
                                 />
                             </div>
 
@@ -173,8 +187,8 @@ export default function New() {
                                     <label className="block mb-2">Make</label>
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        name="make"
+                                        value={formData.make}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
@@ -184,8 +198,8 @@ export default function New() {
                                     <label className="block mb-2">Model</label>
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        name="model"
+                                        value={formData.model}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
@@ -196,20 +210,20 @@ export default function New() {
                                 <div>
                                     <label className="block mb-2">Year</label>
                                     <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        type="number"
+                                        name="year"
+                                        value={formData.year}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-2">Miliage</label>
+                                    <label className="block mb-2">Price</label>
                                     <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
+                                        type="number"
+                                        name="price"
+                                        value={formData.price}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
@@ -217,42 +231,52 @@ export default function New() {
                                 </div>
                             </div>
                             <div className='grid grid-cols-2 gap-4'>
-                            <div>
-                                <label className="block mb-2">Fuel Type</label>
-                                <select
-                                    name="fuelType"
-                                    value={formData.fuelType}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full p-2 border rounded active:outline-none"
-                                >
-                                    {FUEL_TYPES.map((fuelType) => (
-                                        <option key={fuelType} value={fuelType}>
-                                            {fuelType}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
                                 <div>
-                                    <label className="block mb-2">Transimition</label>
+                                    <label className="block mb-2">Mileage</label>
+                                    <input
+                                        type="text"
+                                        name="mileage"
+                                        value={formData.mileage}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="w-full p-2 border rounded active:outline-none"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Fuel Type</label>
                                     <select
-                                        name="transimition"
-                                        value={formData.transimition}
+                                        name="fuelType"
+                                        value={formData.fuelType}
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
                                     >
-                                        {TRANSMISSIONS.map((transimition) => (
-                                            <option key={transimition} value={transimition}>
-                                                {transimition}
+                                        {FUEL_TYPES.map((fuelType) => (
+                                            <option key={fuelType} value={fuelType}>
+                                                {fuelType}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
                             </div>
-
-
-                            
+                            <div className='grid grid-cols-2 gap-4'>
+                                <div>
+                                    <label className="block mb-2">Transmission</label>
+                                    <select
+                                        name="transmission"
+                                        value={formData.transmission}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="w-full p-2 border rounded active:outline-none"
+                                    >
+                                        {TRANSMISSIONS.map((transmission) => (
+                                            <option key={transmission} value={transmission}>
+                                                {transmission}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
 
                             <div>
                                 <label className="block mb-2">Feature Image</label>

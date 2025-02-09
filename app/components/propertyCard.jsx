@@ -1,23 +1,56 @@
+'use client'
+
 import { Card, CardContent } from "../../components/ui/card"
+import { useEffect, useState } from "react"
+import pb from "../../lib/pocketbase"
 
 export default function PropertyCard() {
+  const [properties, setProperties] = useState([])
+
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const records = await pb.collection('properties').getList(1, 50, {
+          sort: '-created'
+        })
+        setProperties(records.items)
+      } catch (error) {
+        console.error('Error fetching properties:', error)
+      }
+    }
+
+    fetchProperties()
+  }, [])
+
   return (
-    <Card className="max-w-sm overflow-hidden rounded-3xl">
-      <div className="relative aspect-[4/3]">
-        <img
-          src="/images/property.png"
-          alt="Brick apartment building with large windows"
-          className="object-cover w-full h-full"
-        />
-      </div>
-      <CardContent className="p-4 space-y-2">
-        <h2 className="font-bold text">2 Bed Duplex Apartment, Backyard</h2>
-        <p className="text-sm text-muted-foreground mt-3">
-          8 rooms • 2 Beds • 1 Bath
-        </p>
-        <p className="text-lg font-bold mt-5">750USD</p>
-      </CardContent>
-    </Card>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {properties.map((property) => (
+        <Card key={property.id} className="max-w-sm overflow-hidden rounded-3xl">
+          <div className="relative aspect-[4/3]">
+            <img
+              src={property.image ? `http://127.0.0.1:8090/api/files/properties/${property.id}/${property.image}` : '/images/property.png'}
+              alt={property.name}
+              className="object-cover w-full h-full"
+            />
+          </div>
+          <CardContent className="p-4 space-y-2">
+            <h2 className="font-bold text-lg">{property.name}</h2>
+            <p className="text-sm text-muted-foreground">{property.description}</p>
+            <div className="flex items-center justify-between mt-2">
+              <p className="text-sm text-muted-foreground">
+                {property.city}, {property.country}
+              </p>
+              <span className="px-2 py-1 text-xs bg-gray-100 rounded-full">
+                {property.type}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mt-3">
+              <p className="text-lg font-bold">{property.price} USD</p>
+              <p className="text-sm text-muted-foreground">/{property.term}</p>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
   )
 }
-

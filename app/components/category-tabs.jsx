@@ -1,16 +1,36 @@
 'use client'
-import { LuBuilding2 } from "react-icons/lu";
 import { FaCar } from "react-icons/fa";
-import { LuTruck } from "react-icons/lu";
-import { LuHotel } from "react-icons/lu";
-import { LuBriefcase } from "react-icons/lu";
+import { LuTruck, LuHotel, LuBriefcase, LuBuilding2 } from "react-icons/lu";
 import { BiCategory } from "react-icons/bi";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import PropertyCard from "./propertyCard";
 import CarCard from "./carCard";
-import CarListingCard from "./CarListingCard";
+import pb from '../../lib/pocketbase'
+import { useEffect, useState } from "react";
 
 export function CategoryTabs() {
+
+  const [userproperties, setUserproperties] = useState([]);
+
+  useEffect(() => {
+    const fetchUserproperties = async () => {
+      try {
+        const userId = pb.authStore.model.id
+        const records = await pb.collection('properties').getList(1, 50, {
+          filter: `user = "${userId}"`,
+          sort: '-created'
+        });
+        setUserproperties(records.items)
+      } catch (error) {
+        console.error('Error fetching properties:', error)
+      }
+    }
+
+    if (pb.authStore.isValid) {
+      fetchUserproperties()
+    }
+  }, [])
+
   return (
     <>
       <Tabs defaultValue="all" className="w-full my-4 mx-auto max-w-6xl">
@@ -26,11 +46,11 @@ export function CategoryTabs() {
         </TabsList>
 
         {/* Content */}
-        <TabsContent value="properties">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <PropertyCard />
-            <PropertyCard />
-            <PropertyCard />
+        <TabsContent value="properties" className="col-span-3">
+          <div className="">
+            {userproperties.map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
           </div>
         </TabsContent>
         <TabsContent value="cars"><CarCard /></TabsContent>

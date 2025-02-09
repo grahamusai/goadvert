@@ -34,7 +34,7 @@ const paymentMethods = [
 
 
 export function PaymentModal({ isOpen, onClose, plan }) {
-  const [selectedMethod, setSelectedMethod] = useState<string>("stripe")
+  const [selectedMethod, setSelectedMethod] = useState("stripe")
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = async () => {
@@ -58,7 +58,7 @@ export function PaymentModal({ isOpen, onClose, plan }) {
               <div className="text-right">
                 <div className="text-sm font-medium">{plan.name}</div>
                 <div className="text-2xl font-bold">
-                  €{plan.price}
+                  {plan.price}
                   <span className="text-sm text-zinc-400">/{plan.period}</span>
                 </div>
               </div>
@@ -96,4 +96,3 @@ export function PaymentModal({ isOpen, onClose, plan }) {
     </Dialog>
   )
 }
-
