@@ -12,7 +12,8 @@ export default function PropertyCard() {
     async function fetchProperties() {
       try {
         const records = await pb.collection('properties').getList(1, 50, {
-          sort: '-created'
+          sort: '-created',
+           requestKey: null 
         })
         setProperties(records.items)
       } catch (error) {

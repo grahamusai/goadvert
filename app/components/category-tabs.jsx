@@ -2,9 +2,11 @@
 import { FaCar } from "react-icons/fa";
 import { LuTruck, LuHotel, LuBriefcase, LuBuilding2 } from "react-icons/lu";
 import { BiCategory } from "react-icons/bi";
+import { MdPhonelink } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import PropertyCard from "./propertyCard";
 import CarCard from "./carCard";
+import { GiAmpleDress } from "react-icons/gi";
 import pb from '../../lib/pocketbase'
 import { useEffect, useState } from "react";
 
@@ -41,8 +43,8 @@ export function CategoryTabs() {
           <TabsTrigger value="cars"><FaCar />&nbsp;Cars</TabsTrigger>
           <TabsTrigger value="hotels"><LuHotel />&nbsp;Hotels</TabsTrigger>
           <TabsTrigger value="jobs"><LuBriefcase />&nbsp;Jobs</TabsTrigger>
-          <TabsTrigger value="electronics"><LuBriefcase />&nbsp;Electronics</TabsTrigger>
-          <TabsTrigger value="logistics"><LuTruck />&nbsp;Logistics</TabsTrigger>
+          <TabsTrigger value="electronics"><MdPhonelink />&nbsp;Electronics</TabsTrigger>
+          <TabsTrigger value="logistics"><GiAmpleDress />&nbsp;Clothing</TabsTrigger>
         </TabsList>
 
         {/* Content */}

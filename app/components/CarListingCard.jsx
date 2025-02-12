@@ -2,8 +2,12 @@ import Image from "next/image"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
 import { Badge } from "../../components/ui/badge"
 import { Button } from "../../components/ui/button"
+import { IoIosSpeedometer } from "react-icons/io";
+import { BsFillFuelPumpFill } from "react-icons/bs";
+import { GiGearStick } from "react-icons/gi";
+import { FaCar } from "react-icons/fa";
 
- function CarListingCard(props) {
+function CarListingCard(props) {
   const {
     make,
     model,
@@ -36,13 +40,20 @@ import { Button } from "../../components/ui/button"
         </p>
         <div className="grid grid-cols-2 gap-2 mb-4">
           <Badge variant="secondary" className="justify-center">
-            {mileage.toLocaleString()} miles
+            <IoIosSpeedometer /> &nbsp;
+            {mileage.toLocaleString()} Km
           </Badge>
           <Badge variant="secondary" className="justify-center">
+            <BsFillFuelPumpFill /> &nbsp;
             {fuelType}
           </Badge>
           <Badge variant="secondary" className="justify-center">
+            <GiGearStick /> &nbsp;
             {transmission}
+          </Badge>
+          <Badge variant="secondary" className="justify-center">
+            <FaCar /> &nbsp;
+            {make}
           </Badge>
         </div>
       </CardContent>
