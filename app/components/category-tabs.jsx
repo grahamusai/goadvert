@@ -36,9 +36,9 @@ export function CategoryTabs() {
 
   return (
     <>
-      <Tabs defaultValue="all" className="w-full my-4 mx-auto max-w-6xl bg-blue-">
+      <Tabs defaultValue="all" className="w-full my-4 max-w-[80rem] mx-auto">
         {/* Headers */}
-        <TabsList >
+        <TabsList>
           <TabsTrigger value="properties" className="w-full "><LuBuilding2 />&nbsp;Properties</TabsTrigger>
           <TabsTrigger value="cars"><FaCar />&nbsp;Cars</TabsTrigger>
           <TabsTrigger value="hotels"><LuHotel />&nbsp;Hotels</TabsTrigger>
@@ -46,7 +46,7 @@ export function CategoryTabs() {
           <TabsTrigger value="electronics"><MdPhonelink />&nbsp;Electronics</TabsTrigger>
           <TabsTrigger value="logistics"><GiAmpleDress />&nbsp;Clothing</TabsTrigger>
           <TabsTrigger value="business"><GiAmpleDress />&nbsp;Business Directory</TabsTrigger>
-          {/* <TabsTrigger value="all" className="w-full bg-blue-500 text-white"><BiCategory />&nbsp;All categories</TabsTrigger> */}
+          <TabsTrigger value="all" className="w-full bg-blue-500 text-white"><BiCategory />&nbsp;All categories</TabsTrigger>
 
         </TabsList>
 
@@ -65,9 +65,9 @@ export function CategoryTabs() {
         <TabsContent value="jobs">Jobs</TabsContent>
         <TabsContent value="electronics">Electronics</TabsContent>
         <TabsContent value="business">Business Directory</TabsContent>
-        {/* <TabsContent value="all" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <TabsContent value="all" className="">
           <Categories />
-        </TabsContent> */}
+        </TabsContent>
       </Tabs>
 
     </>
