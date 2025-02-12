@@ -75,7 +75,7 @@ function CarListingCard(props) {
         <DrawerTrigger className="w-full bg-black py-2 text-white rounded-sm">View Details</DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>Additional Car Detailss</DrawerTitle>
+            <DrawerTitle>Additional Car Details</DrawerTitle>
             <DrawerDescription>This action cannot be undone.</DrawerDescription>
           </DrawerHeader>
           <DrawerFooter>
