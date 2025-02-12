@@ -1,5 +1,5 @@
 'use client'
-
+import supabase from "../../lib/supabase"
 import { Card, CardContent } from "../../components/ui/card"
 import { useEffect, useState } from "react"
 import pb from "../../lib/pocketbase"
