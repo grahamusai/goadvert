@@ -46,7 +46,7 @@ export function CategoryTabs() {
         </TabsList>
 
         {/* Content */}
-        <TabsContent value="properties" className="col-span-3">
+        <TabsContent value="properties" className="">
           <div className="">
             {userproperties.map((property) => (
               <PropertyCard key={property.id} property={property} />
