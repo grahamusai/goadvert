@@ -4,6 +4,7 @@ import { Card, CardContent } from "../../components/ui/card"
 import { useEffect, useState } from "react"
 import pb from "../../lib/pocketbase"
 
+
 export default function PropertyCard() {
   const [properties, setProperties] = useState([])
 
@@ -28,7 +29,7 @@ export default function PropertyCard() {
         <Card key={property.id} className="max-w-sm overflow-hidden rounded-3xl">
           <div className="relative aspect-[4/3]">
             <img
-              src={property.image ? `http://127.0.0.1:8090/api/files/properties/${property.id}/${property.image}` : '/images/property.png'}
+              src={property.image_url || '/images/property.png'}
               alt={property.name}
               className="object-cover w-full h-full"
             />

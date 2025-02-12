@@ -1,6 +1,7 @@
 "use client"
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import pb from '../../../lib/pocketbase';
+import supabase from '../../../lib/supabase';
 import { UserSidebar } from '../components/sidebar-app';
 import Navbar from '../../components/navbar';
 
@@ -25,6 +26,9 @@ export default function New() {
         description: '',
         type: LISTING_TYPES[0],
         price: '',
+        city: '',
+        country: '',
+        term: '',
     });
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState('');
@@ -60,24 +64,46 @@ export default function New() {
                 throw new Error('You must be logged in to create a post');
             }
 
-            // Create form data for the request
+            let imageUrl = null;
+            
+            if (image) {
+                // Upload image to Supabase Storage
+                const fileExt = image.name.split('.').pop();
+                const fileName = `${Math.random()}.${fileExt}`;
+                const { data, error: uploadError } = await supabase.storage
+                    .from('property-images')
+                    .upload(fileName, image);
+
+                if (uploadError) {
+                    throw new Error('Error uploading image: ' + uploadError.message);
+                }
+
+                // Get the public URL
+                const { data: { publicUrl } } = supabase.storage
+                    .from('property-images')
+                    .getPublicUrl(fileName);
+                
+                imageUrl = publicUrl;
+            }
+
+            // Create form data for PocketBase
             const formDataToSend = new FormData();
             formDataToSend.append('name', formData.name);
             formDataToSend.append('description', formData.description);
             formDataToSend.append('type', formData.type);
-            formDataToSend.append('price', parseFloat(formData.price));
-            formDataToSend.append('user', authData.id); // Associate post with user ID
-            formDataToSend.append('username', authData.username); // Store username with post
+            formDataToSend.append('price', formData.price);
             formDataToSend.append('city', formData.city);
             formDataToSend.append('country', formData.country);
             formDataToSend.append('term', formData.term);
-            if (image) {
-                formDataToSend.append('image', image);
+            formDataToSend.append('user', authData.id);
+            if (imageUrl) {
+                formDataToSend.append('image_url', imageUrl);
             }
 
-            // Using the imported pb instance
-            await pb.collection('properties').create(formDataToSend);
+            // Create property listing in PocketBase
+            const record = await pb.collection('properties').create(formDataToSend);
 
+            setSuccess(true);
             // Reset form
             setFormData({
                 name: '',
@@ -90,12 +116,9 @@ export default function New() {
             });
             setImage(null);
             setPreview('');
-            setSuccess(true);
-
-            // Clear success message after 3 seconds
-            setTimeout(() => setSuccess(false), 3000);
+            
         } catch (err) {
-            setError(err.message || 'Something went wrong');
+            setError(err.message);
         } finally {
             setLoading(false);
         }
@@ -228,6 +251,7 @@ export default function New() {
                                 <label className="block mb-2">Feature Image</label>
                                 <input
                                     type="file"
+                                    multiple
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     className="w-full p-2 border rounded"

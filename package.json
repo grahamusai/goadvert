@@ -2,6 +2,11 @@
   "name": "goadvert",
   "version": "0.1.0",
   "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "supabase"
+    ]
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -25,6 +30,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.6",
+    "@supabase/supabase-js": "^2.48.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.0.11",
@@ -34,6 +40,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
+    "supabase": "^2.12.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7"
   },

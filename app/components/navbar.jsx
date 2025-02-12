@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState, useEffect } from 'react'
 import pb from '../../lib/pocketbase'
 import { useRouter } from 'next/navigation'
-
+import { MdSupportAgent } from "react-icons/md";
 import { Button } from "../../components/ui/button";
 import {
   DropdownMenu,
@@ -39,7 +39,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-14 w-14 overflow-hidden  ">
-              <Image
+            <Image
               src="/images/Logo.png"
               alt="Logo"
               className="object-cover"
@@ -72,7 +72,7 @@ export default function Navbar() {
       </div>
       <div className="flex items-center gap-4">
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
+          <Link href="#" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
             Buy
           </Link>
           <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
@@ -81,8 +81,8 @@ export default function Navbar() {
           <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
             Rent
           </Link>
-          <Link href="/login" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'> 
-            Contact Us
+          <Link href="/login" variant="ghost" className='hover:text-blue-500 transition-colors text-2xl'>
+            <MdSupportAgent />
           </Link>
         </div>
         <DropdownMenu>
@@ -109,7 +109,7 @@ export default function Navbar() {
         </DropdownMenu>
         <div className="flex items-center gap-2">
           {isLoggedIn ? (
-            <button 
+            <button
               onClick={handleLogout}
               className="text-sm text-red-500 hover:text-red-600"
             >
