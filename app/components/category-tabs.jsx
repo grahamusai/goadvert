@@ -37,7 +37,7 @@ export function CategoryTabs() {
 
   return (
     <>
-      <Tabs defaultValue="all" className="w-full my-4 max-w-[80rem] mx-auto">
+      <Tabs defaultValue="all" className="hidden md:block w-full my-4 max-w-[80rem] mx-auto">
         {/* Headers */}
         <TabsList>
           <TabsTrigger value="properties" className="w-full "><LuBuilding2 />&nbsp;Properties</TabsTrigger>
@@ -70,7 +70,9 @@ export function CategoryTabs() {
           <Categories />
         </TabsContent>
       </Tabs>
-
+      <div className="md:hidden">
+      <Categories />
+      </div>
     </>
   )
 }

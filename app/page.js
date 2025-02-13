@@ -2,7 +2,7 @@ import Image from "next/image";
 import Navbar from "./components/navbar";
 import Header from "./components/header";
 import { CategoryTabs } from "./components/category-tabs";
-import Popular from "./components/popular";
+import { MdContactSupport } from "react-icons/md";
 import Highlights from "./components/highlights";
 import Services from "./components/services";
 import Ads from "./components/ads";
@@ -26,6 +26,19 @@ export default function Home() {
       <Download />
       <Footer />
       <FloatingNavbar />
+      <div className="fixed bottom-6 right-6">
+        <a
+          href="/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-blue-600 text-white font-medium rounded-full px-4 py-2 flex items-center justify-center hover:bg-yellow-600 transition duration-300 ease-in-out shadow-lg"
+        >
+          <span className="text-lg mr-2">
+            <MdContactSupport />
+          </span>
+          Support
+        </a>
+      </div>
     </div>
   );
 }

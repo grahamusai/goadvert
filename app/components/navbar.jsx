@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import pb from '../../lib/pocketbase'
 import { useRouter } from 'next/navigation'
 import { MdSupportAgent } from "react-icons/md";
+import { FaCartShopping } from "react-icons/fa6";
 import { Button } from "../../components/ui/button";
 import {
   DropdownMenu,
@@ -62,7 +63,7 @@ export default function Navbar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex max-w-xl flex-1 items-center gap-2 rounded-full border bg-background px-3">
+      <div className="hidden md:flex max-w-xl flex-1 items-center gap-2 rounded-full border bg-background px-3">
         <Search className="h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
@@ -71,7 +72,7 @@ export default function Navbar() {
         />
       </div>
       <div className="flex items-center gap-4">
-        <div className="hidden items-center gap-2 md:flex">
+        <div className=" items-center gap-2 flex">
           <Link href="#" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
             Buy
           </Link>
@@ -82,7 +83,7 @@ export default function Navbar() {
             Rent
           </Link>
           <Link href="/login" variant="ghost" className='hover:text-blue-500 transition-colors text-2xl'>
-            <MdSupportAgent />
+            {/* <MdSupportAgent /> */}
           </Link>
         </div>
         <DropdownMenu>
@@ -97,7 +98,7 @@ export default function Navbar() {
                   sizes="20px"
                 />
               </div>
-              USD
+              <span className="hidden md:block">USD</span>
               <span className="sr-only">Select currency</span>
             </Button>
           </DropdownMenuTrigger>
@@ -107,6 +108,7 @@ export default function Navbar() {
             <DropdownMenuItem>CHF</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <FaCartShopping />
         <div className="flex items-center gap-2">
           {isLoggedIn ? (
             <button
