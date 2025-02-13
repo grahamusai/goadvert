@@ -16,9 +16,10 @@ const ListingCard = ({
     <Card className={`${className} w-full max-w-sm overflow-hidden`}>
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
-          src={imageUrl}
+          // src={imageUrl}
+          src="/images/property.png"
           alt="House model with keys"
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-50%"
         />
       </div>
       <CardContent className="p-4 space-y-3">

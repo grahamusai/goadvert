@@ -28,6 +28,8 @@ function CarListingCard(props) {
     fuelType,
     transmission,
     imageUrl,
+    title,
+    description,
   } = props
 
   return (
@@ -36,7 +38,7 @@ function CarListingCard(props) {
         <CardHeader className="p-0">
           <div className="relative h-48 w-full">
             <Image
-              src={imageUrl || "/placeholder.svg"}
+              src={imageUrl || "/images/car-placeholder.jpg"}
               alt={`${year} ${make} ${model}`}
               layout="fill"
               objectFit="cover"
@@ -45,8 +47,11 @@ function CarListingCard(props) {
         </CardHeader>
         <CardContent className="p-4">
           <CardTitle className="text-xl font-bold mb-2">
-            {year} {make} {model}
+            {title || `${year} ${make} ${model}`}
           </CardTitle>
+          {description && (
+            <p className="text-sm text-muted-foreground mb-3"></p>
+          )}
           <p className="text-2xl font-semibold text-primary mb-4">
             ${price.toLocaleString()}
           </p>
@@ -72,14 +77,14 @@ function CarListingCard(props) {
         <CardFooter className="p-4 pt-0">
            {/* Drawer */}
       <Drawer>
-        <DrawerTrigger className="w-full bg-black py-2 text-white rounded-sm">View Details</DrawerTrigger>
+        <DrawerTrigger className="w-full bg-blue-500 py-2 text-white rounded-sm">View Details</DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Additional Car Details</DrawerTitle>
-            <DrawerDescription>This action cannot be undone.</DrawerDescription>
+            <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
           <DrawerFooter>
-            <Button>Submit</Button>
+            <Button>Add To Cart</Button>
             <DrawerClose>
               <Button variant="outline">Cancel</Button>
             </DrawerClose>

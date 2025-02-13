@@ -16,9 +16,9 @@ const Services = () => {
                     <div className="mt-10 w-full md:w-1/2">
                         <h3 className="text-lg font-bold text-[#227CF4]">Quality Property</h3>
                         <h2 className=' text-2xl font-bold my-3'>Looking for Luxurious Properties? We have you covered!</h2>
-                        <p className="text-gray-600 hidden md:block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        {/* <p className="text-gray-600 hidden md:block">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-                        </p>
+                        </p> */}
                         <div className="flex gap-5 mb-5">
                             <div className="w-1/2 ">
                                 <div className='text-4xl text-blue-500 mt-6'>
@@ -32,7 +32,7 @@ const Services = () => {
                                     <BsChatLeftDots />
                                 </div>
                                 <h3 className='text-lg font-bold  mt-3'>Live Chat</h3>
-                                <p className='text-sm md:text-base'>User-friendly feature designed to provide instant
+                                <p className='text-sm md:text-sm'>User-friendly feature designed to provide instant
                                 support and guidance whenever you need it. </p>
                             </div>
                         </div>
@@ -42,14 +42,17 @@ const Services = () => {
                                     <LuMap />
                                 </div>
                                 <h3 className='text-lg font-bold  mt-3'>Intergrated Map</h3>
-                                <p className='text-sm md:text-base'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis ducimus suscipit libero!</p>
+                                <p className='text-sm md:text-sm'>We introduced our powerful Integrated
+                                    Map Function—a visually dynamic and interactive tool designed to enhance your property search
+                                    experience.</p>
                             </div>
                             <div className="w-1/2">
                                 <div className='text-4xl text-blue-500 mt-6 font-extrabold'>
                                     <BsHouse />
                                 </div>
                                 <h3 className='text-lg font-bold  mt-3'>Easy Property Sales</h3>
-                                <p className='text-sm md:text-base'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Debitis ducimus suscipit libero!</p>
+                                <p className='text-sm md:text-sm'>We take the stress out of property sales by
+                                directly connecting property sellers with willing buyers and real estate investors. </p>
                             </div>
                         </div>
                     </div>

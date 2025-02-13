@@ -3,24 +3,29 @@ import { MapPin } from 'lucide-react'
 
 const locations = [
   {
-    city: "Johannesburg",
-    listings: 25,
-    imageUrl: "/images/joburg.jpg",
-  },
-  {
     city: "Harare",
     listings: 25,
     imageUrl: "/images/harare.jpg",
   },
   {
-    city: "Capetown",
-    listings: 25,
-    imageUrl: "/images/capetown.jpg",
-  },
-  {
     city: "Bulawayo",
     listings: 25,
     imageUrl: "/images/bulawayo.jpg",
+  },
+  {
+    city: "Mutare",
+    listings: 25,
+    imageUrl: "/images/mutare.jpg",
+  },
+  {
+    city: "Johannesburg",
+    listings: 25,
+    imageUrl: "/images/joburg.jpg",
+  },
+  {
+    city: "Capetown",
+    listings: 25,
+    imageUrl: "/images/capetown.jpg",
   },
   {
     city: "Pretoria",
@@ -36,7 +41,7 @@ export default function BentoGrid() {
         {locations.map((location, index) => {
           // Define the column span classes based on index
           const isWide = index === 3 // Bulawayo
-          const colSpanClass = isWide ? "md:col-span-4" : "md:col-span-2"
+          const colSpanClass =   "md:col-span-2"
           
           return (
             <div

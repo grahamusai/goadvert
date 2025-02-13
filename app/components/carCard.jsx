@@ -1,49 +1,48 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import CarListingCard from "./CarListingCard"
+import pb from '../../lib/pocketbase'
 
 const CarCard = () => {
+    const [cars, setCars] = useState([])
 
-    const sampleCars = [
-        {
-          make: "Toyota",
-          model: "Camry",
-          year: 2022,
-          price: 25000,
-          mileage: 15000,
-          fuelType: "Gasoline",
-          transmission: "Automatic",
-          imageUrl: "/images/mini.jpg",
-        },
-        {
-          make: "Tesla",
-          model: "Model 3",
-          year: 2023,
-          price: 45000,
-          mileage: 5000,
-          fuelType: "Electric",
-          transmission: "Automatic",
-          imageUrl: "/images/camry.webp",
-        },
-        {
-          make: "Ford",
-          model: "F-150",
-          year: 2021,
-          price: 35000,
-          mileage: 20000,
-          fuelType: "Diesel",
-          transmission: "Automatic",
-          imageUrl: "/images/mini.jpg",
-        },
-      ]
-  return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {sampleCars.map((car, index) => (
-          <CarListingCard key={index} {...car} />
-        ))}
-      </div>
-    </div>
-  )
+    useEffect(() => {
+        async function fetchCars() {
+            try {
+                const records = await pb.collection('cars').getList(1, 50, {
+                    sort: '-created'
+                });
+                setCars(records.items);
+            } catch (error) {
+                console.error('Error fetching cars:', error);
+            }
+        }
+
+        fetchCars();
+    }, []);
+
+    return (
+        <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {cars.map((car) => (
+                    <CarListingCard
+                        key={car.id}
+                        make={car.make}
+                        model={car.model}
+                        year={car.year}
+                        price={car.price}
+                        mileage={car.mileage}
+                        fuelType={car.fuelType}
+                        transmission={car.transmission}
+                        imageUrl={car.image_url}
+                        title={car.title}
+                        description={car.description}
+                    />
+                ))}
+            </div>
+        </div>
+    )
 }
 
 export default CarCard;

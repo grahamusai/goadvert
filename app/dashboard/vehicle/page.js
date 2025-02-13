@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import pb from '../../../lib/pocketbase';
+import supabase from '../../../lib/supabase';
 import { UserSidebar } from '../components/sidebar-app';
 import Navbar from '../../components/navbar';
 
@@ -73,7 +74,29 @@ export default function New() {
                 throw new Error('You must be logged in to create a post');
             }
 
-            // Create form data for the request
+            let imageUrl = null;
+            
+            if (image) {
+                // Upload image to Supabase Storage
+                const fileExt = image.name.split('.').pop();
+                const fileName = `${Math.random()}.${fileExt}`;
+                const { data, error: uploadError } = await supabase.storage
+                    .from('vehicle-images')
+                    .upload(fileName, image);
+
+                if (uploadError) {
+                    throw new Error('Error uploading image: ' + uploadError.message);
+                }
+
+                // Get the public URL
+                const { data: { publicUrl } } = supabase.storage
+                    .from('vehicle-images')
+                    .getPublicUrl(fileName);
+                
+                imageUrl = publicUrl;
+            }
+
+            // Create form data for PocketBase
             const formDataToSend = new FormData();
             formDataToSend.append('title', formData.title);
             formDataToSend.append('description', formData.description);
@@ -84,12 +107,12 @@ export default function New() {
             formDataToSend.append('mileage', formData.mileage);
             formDataToSend.append('transmission', formData.transmission);
             formDataToSend.append('fuelType', formData.fuelType);
-            formDataToSend.append('user', authData.id); // Associate post with user ID
-            if (image) {
-                formDataToSend.append('image', image);
+            formDataToSend.append('user', authData.id);
+            if (imageUrl) {
+                formDataToSend.append('image_url', imageUrl);
             }
 
-            // Using the imported pb instance
+            // Create vehicle listing in PocketBase
             await pb.collection('cars').create(formDataToSend);
 
             // Reset form
@@ -103,7 +126,6 @@ export default function New() {
                 mileage: '',
                 transmission: TRANSMISSIONS[0],
                 fuelType: FUEL_TYPES[0],
-                user: authData.id,
             });
             setImage(null);
             setPreview('');
@@ -112,7 +134,7 @@ export default function New() {
             // Clear success message after 3 seconds
             setTimeout(() => setSuccess(false), 3000);
         } catch (err) {
-            setError(err.message || 'Something went wrong');
+            setError(err.message);
         } finally {
             setLoading(false);
         }

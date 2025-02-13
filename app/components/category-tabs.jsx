@@ -3,6 +3,7 @@ import { FaCar } from "react-icons/fa";
 import { LuTruck, LuHotel, LuBriefcase, LuBuilding2 } from "react-icons/lu";
 import { BiCategory } from "react-icons/bi";
 import { MdPhonelink } from "react-icons/md";
+import { GoFileDirectoryFill } from "react-icons/go";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
 import PropertyCard from "./propertyCard";
 import Categories from "./categories";
@@ -45,7 +46,7 @@ export function CategoryTabs() {
           <TabsTrigger value="jobs"><LuBriefcase />&nbsp;Jobs</TabsTrigger>
           <TabsTrigger value="electronics"><MdPhonelink />&nbsp;Electronics</TabsTrigger>
           <TabsTrigger value="logistics"><GiAmpleDress />&nbsp;Clothing</TabsTrigger>
-          <TabsTrigger value="business"><GiAmpleDress />&nbsp;Business Directory</TabsTrigger>
+          <TabsTrigger value="business"><GoFileDirectoryFill />&nbsp;Business Directory</TabsTrigger>
           <TabsTrigger value="all" className="w-full bg-blue-500 text-white"><BiCategory />&nbsp;All categories</TabsTrigger>
 
         </TabsList>

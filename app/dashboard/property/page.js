@@ -205,7 +205,7 @@ export default function New() {
                                     <input
                                         type="text"
                                         name="country"
-                                        value={formData.country}
+                                        value={formData.country} 
                                         onChange={handleInputChange}
                                         required
                                         className="w-full p-2 border rounded active:outline-none"
