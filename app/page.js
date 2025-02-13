@@ -33,7 +33,7 @@ export default function Home() {
           rel="noopener noreferrer"
           className="bg-blue-600 text-white font-medium rounded-full px-4 py-2 flex items-center justify-center hover:bg-yellow-600 transition duration-300 ease-in-out shadow-lg"
         >
-          <span className="text-lg mr-2">
+          <span className="text-lg mr-2 hidden md:block">
             <MdContactSupport />
           </span>
           Support

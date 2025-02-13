@@ -49,7 +49,7 @@ export default function Navbar() {
             />
           </div>
         </Link>
-        <DropdownMenu>
+        <DropdownMenu className="hidden md:block">
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="gap-2">
               EN
@@ -86,7 +86,7 @@ export default function Navbar() {
             {/* <MdSupportAgent /> */}
           </Link>
         </div>
-        <DropdownMenu>
+        <DropdownMenu className="hidden md:block">
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="gap-2">
               <div className="relative h-5 w-5 overflow-hidden rounded-full">
