@@ -1,13 +1,78 @@
 'use client'
 import supabase from "../../lib/supabase"
 import { Card, CardContent } from "../../components/ui/card"
-import { Skeleton } from "../../components/ui/skeleton" // Import the Skeleton component
+import { Skeleton } from "../../components/ui/skeleton"
 import { useEffect, useState } from "react"
 import pb from "../../lib/pocketbase"
 
+function PropertyItem({ property }) {
+  // Parse image_urls if it's a string
+  const images = property.image_urls ? JSON.parse(property.image_urls) : (property.image_url ? [property.image_url] : []);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const nextImage = (e) => {
+    e.preventDefault();
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const previousImage = (e) => {
+    e.preventDefault();
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  return (
+    <Card className="max-w-sm overflow-hidden rounded-3xl group">
+      <div className="relative aspect-[4/3]">
+        <img
+          src={images[currentImageIndex] || '/images/property.png'}
+          alt={property.name}
+          className="object-cover w-full h-full"
+        />
+        {images.length > 1 && (
+          <>
+            <div className="absolute inset-0 flex items-center justify-between p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button
+                onClick={previousImage}
+                className="bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-75 transition-all"
+              >
+                ←
+              </button>
+              <button
+                onClick={nextImage}
+                className="bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-75 transition-all"
+              >
+                →
+              </button>
+            </div>
+            <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-sm">
+              {currentImageIndex + 1}/{images.length}
+            </div>
+          </>
+        )}
+      </div>
+      <CardContent className="p-4 space-y-2">
+        <h2 className="font-bold text-lg">{property.name}</h2>
+        <p className="text-sm text-muted-foreground">{property.description}</p>
+        <div className="flex items-center justify-between mt-2">
+          <p className="text-sm text-muted-foreground">
+            {property.city}, {property.country}
+          </p>
+          <span className="px-2 py-1 text-xs bg-gray-100 rounded-full">
+            {property.type}
+          </span>
+        </div>
+        <div className="flex items-center justify-between mt-3">
+          <p className="text-lg font-bold">{property.price} USD</p>
+          <p className="text-sm text-muted-foreground">/{property.term}</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function PropertyCard() {
   const [properties, setProperties] = useState([])
-  const [loading, setLoading] = useState(true) // Add a loading state
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function fetchProperties() {
@@ -19,7 +84,7 @@ export default function PropertyCard() {
       } catch (error) {
         console.error('Error fetching properties:', error)
       } finally {
-        setLoading(false) // Set loading to false after fetching data
+        setLoading(false)
       }
     }
 
@@ -29,7 +94,6 @@ export default function PropertyCard() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {loading ? (
-        // Display skeleton while loading
         Array.from({ length: 8 }).map((_, index) => (
           <Card key={index} className="max-w-sm overflow-hidden rounded-3xl">
             <div className="relative aspect-[4/3]">
@@ -50,33 +114,8 @@ export default function PropertyCard() {
           </Card>
         ))
       ) : (
-        // Display actual content once data is loaded
         properties.map((property) => (
-          <Card key={property.id} className="max-w-sm overflow-hidden rounded-3xl">
-            <div className="relative aspect-[4/3]">
-              <img
-                src={property.image_url || '/images/property.png'}
-                alt={property.name}
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <CardContent className="p-4 space-y-2">
-              <h2 className="font-bold text-lg">{property.name}</h2>
-              <p className="text-sm text-muted-foreground">{property.description}</p>
-              <div className="flex items-center justify-between mt-2">
-                <p className="text-sm text-muted-foreground">
-                  {property.city}, {property.country}
-                </p>
-                <span className="px-2 py-1 text-xs bg-gray-100 rounded-full">
-                  {property.type}
-                </span>
-              </div>
-              <div className="flex items-center justify-between mt-3">
-                <p className="text-lg font-bold">{property.price} USD</p>
-                <p className="text-sm text-muted-foreground">/{property.term}</p>
-              </div>
-            </CardContent>
-          </Card>
+          <PropertyItem key={property.id} property={property} />
         ))
       )}
     </div>

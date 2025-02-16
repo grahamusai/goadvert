@@ -1,5 +1,5 @@
 "use client"
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import pb from '../../../lib/pocketbase';
 import supabase from '../../../lib/supabase';
 import { UserSidebar } from '../components/sidebar-app';
@@ -28,10 +28,10 @@ export default function New() {
         price: '',
         city: '',
         country: '',
-        term: '',
+        term: LISTING_TERMS[0],
     });
-    const [image, setImage] = useState(null);
-    const [preview, setPreview] = useState('');
+    const [images, setImages] = useState([]);
+    const [previews, setPreviews] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -45,10 +45,14 @@ export default function New() {
     };
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(file);
-            setPreview(URL.createObjectURL(file));
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            setImages(files);
+            // Create preview URLs for all selected images
+            const newPreviews = files.map(file => URL.createObjectURL(file));
+            // Revoke old preview URLs to avoid memory leaks
+            previews.forEach(preview => URL.revokeObjectURL(preview));
+            setPreviews(newPreviews);
         }
     };
 
@@ -64,26 +68,28 @@ export default function New() {
                 throw new Error('You must be logged in to create a post');
             }
 
-            let imageUrl = null;
+            let imageUrls = [];
             
-            if (image) {
-                // Upload image to Supabase Storage
-                const fileExt = image.name.split('.').pop();
-                const fileName = `${Math.random()}.${fileExt}`;
-                const { data, error: uploadError } = await supabase.storage
-                    .from('property-images')
-                    .upload(fileName, image);
+            if (images.length > 0) {
+                // Upload all images to Supabase Storage
+                for (const image of images) {
+                    const fileExt = image.name.split('.').pop();
+                    const fileName = `${Math.random()}.${fileExt}`;
+                    const { data, error: uploadError } = await supabase.storage
+                        .from('property-images')
+                        .upload(fileName, image);
 
-                if (uploadError) {
-                    throw new Error('Error uploading image: ' + uploadError.message);
+                    if (uploadError) {
+                        throw new Error('Error uploading image: ' + uploadError.message);
+                    }
+
+                    // Get the public URL
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('property-images')
+                        .getPublicUrl(fileName);
+                    
+                    imageUrls.push(publicUrl);
                 }
-
-                // Get the public URL
-                const { data: { publicUrl } } = supabase.storage
-                    .from('property-images')
-                    .getPublicUrl(fileName);
-                
-                imageUrl = publicUrl;
             }
 
             // Create form data for PocketBase
@@ -96,12 +102,15 @@ export default function New() {
             formDataToSend.append('country', formData.country);
             formDataToSend.append('term', formData.term);
             formDataToSend.append('user', authData.id);
-            if (imageUrl) {
-                formDataToSend.append('image_url', imageUrl);
+            if (imageUrls.length > 0) {
+                // Store the array of image URLs as a JSON string
+                formDataToSend.append('image_urls', JSON.stringify(imageUrls));
+                // Keep the first image as the main image_url for backwards compatibility
+                formDataToSend.append('image_url', imageUrls[0]);
             }
 
             // Create property listing in PocketBase
-            const record = await pb.collection('properties').create(formDataToSend);
+            await pb.collection('properties').create(formDataToSend);
 
             setSuccess(true);
             // Reset form
@@ -112,10 +121,10 @@ export default function New() {
                 price: '',
                 city: '',
                 country: '',
-                term: '',
+                term: LISTING_TERMS[0],
             });
-            setImage(null);
-            setPreview('');
+            setImages([]);
+            setPreviews([]);
             
         } catch (err) {
             setError(err.message);
@@ -127,7 +136,6 @@ export default function New() {
     return (
         <>
             <Navbar />
-
             <UserSidebar />
             <div className="flex">
                 <main className="flex-1 p-6">
@@ -147,26 +155,25 @@ export default function New() {
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <div className='grid grid-cols-2 gap-4'>
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block mb-2">Title</label>
+                                    <label className="block mb-2">Property Name</label>
                                     <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleInputChange}
+                                        className="w-full p-2 border rounded"
                                         required
-                                        className="w-full p-2 border rounded active:outline-none"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-2">Type</label>
+                                    <label className="block mb-2">Property Type</label>
                                     <select
                                         name="type"
                                         value={formData.type}
                                         onChange={handleInputChange}
-                                        required
-                                        className="w-full p-2 border rounded active:outline-none"
+                                        className="w-full p-2 border rounded"
                                     >
                                         {LISTING_TYPES.map((type) => (
                                             <option key={type} value={type}>
@@ -183,57 +190,31 @@ export default function New() {
                                     name="description"
                                     value={formData.description}
                                     onChange={handleInputChange}
+                                    className="w-full p-2 border rounded"
+                                    rows="4"
                                     required
-                                    className="w-full p-2 border rounded h-12s"
-                                />
+                                ></textarea>
                             </div>
 
-                            <div className='grid grid-cols-2 gap-4'>
+                            <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block mb-2">City</label>
+                                    <label className="block mb-2">Price</label>
                                     <input
-                                        type="text"
-                                        name="city"
-                                        value={formData.city}
+                                        type="number"
+                                        name="price"
+                                        value={formData.price}
                                         onChange={handleInputChange}
+                                        className="w-full p-2 border rounded"
                                         required
-                                        className="w-full p-2 border rounded active:outline-none"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-2">Country</label>
-                                    <input
-                                        type="text"
-                                        name="country"
-                                        value={formData.country} 
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full p-2 border rounded active:outline-none"
-                                    />
-                                </div>
-                            </div>
-                            <div className='grid grid-cols-2 gap-4'>
-                            <div>
-                                <label className="block mb-2">Price</label>
-                                <input
-                                    type="number"
-                                    name="price"
-                                    value={formData.price}
-                                    onChange={handleInputChange}
-                                    required
-                                    min="0"
-                                    step="0.01"
-                                    className="w-full p-2 border rounded"
-                                />
-                            </div>
-                                <div>
-                                    <label className="block mb-2">Term</label>
+                                    <label className="block mb-2">Payment Terms</label>
                                     <select
                                         name="term"
                                         value={formData.term}
                                         onChange={handleInputChange}
-                                        required
-                                        className="w-full p-2 border rounded active:outline-none"
+                                        className="w-full p-2 border rounded"
                                     >
                                         {LISTING_TERMS.map((term) => (
                                             <option key={term} value={term}>
@@ -244,11 +225,33 @@ export default function New() {
                                 </div>
                             </div>
 
-
-                            
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block mb-2">City</label>
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={handleInputChange}
+                                        className="w-full p-2 border rounded"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Country</label>
+                                    <input
+                                        type="text"
+                                        name="country"
+                                        value={formData.country}
+                                        onChange={handleInputChange}
+                                        className="w-full p-2 border rounded"
+                                        required
+                                    />
+                                </div>
+                            </div>
 
                             <div>
-                                <label className="block mb-2">Feature Image</label>
+                                <label className="block mb-2">Property Images</label>
                                 <input
                                     type="file"
                                     multiple
@@ -256,22 +259,26 @@ export default function New() {
                                     onChange={handleImageChange}
                                     className="w-full p-2 border rounded"
                                 />
-                                {preview && (
-                                    <img
-                                        src={preview}
-                                        alt="Preview"
-                                        className="mt-2 max-w-xs rounded"
-                                    />
+                                {previews.length > 0 && (
+                                    <div className="mt-2 flex flex-wrap gap-2">
+                                        {previews.map((preview, index) => (
+                                            <img
+                                                key={index}
+                                                src={preview}
+                                                alt={`Preview ${index + 1}`}
+                                                className="w-32 h-32 object-cover rounded"
+                                            />
+                                        ))}
+                                    </div>
                                 )}
                             </div>
 
                             <button
                                 type="submit"
+                                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                                 disabled={loading}
-                                className={`w-full p-2 text-white rounded ${loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
-                                    }`}
                             >
-                                {loading ? 'Adding LISTING...' : 'Add Property'}
+                                {loading ? 'Adding Property...' : 'Add Property'}
                             </button>
                         </form>
                     </div>

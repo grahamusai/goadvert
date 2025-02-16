@@ -40,8 +40,8 @@ export default function New() {
         transmission: TRANSMISSIONS[0],
         fuelType: FUEL_TYPES[0],
     });
-    const [image, setImage] = useState(null);
-    const [preview, setPreview] = useState('');
+    const [images, setImages] = useState([]);
+    const [previews, setPreviews] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
@@ -55,10 +55,14 @@ export default function New() {
     };
 
     const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setImage(file);
-            setPreview(URL.createObjectURL(file));
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+            setImages(files);
+            // Create preview URLs for all selected images
+            const newPreviews = files.map(file => URL.createObjectURL(file));
+            // Revoke old preview URLs to avoid memory leaks
+            previews.forEach(preview => URL.revokeObjectURL(preview));
+            setPreviews(newPreviews);
         }
     };
 
@@ -74,26 +78,28 @@ export default function New() {
                 throw new Error('You must be logged in to create a post');
             }
 
-            let imageUrl = null;
+            let imageUrls = [];
             
-            if (image) {
-                // Upload image to Supabase Storage
-                const fileExt = image.name.split('.').pop();
-                const fileName = `${Math.random()}.${fileExt}`;
-                const { data, error: uploadError } = await supabase.storage
-                    .from('vehicle-images')
-                    .upload(fileName, image);
+            if (images.length > 0) {
+                // Upload all images to Supabase Storage
+                for (const image of images) {
+                    const fileExt = image.name.split('.').pop();
+                    const fileName = `${Math.random()}.${fileExt}`;
+                    const { data, error: uploadError } = await supabase.storage
+                        .from('vehicle-images')
+                        .upload(fileName, image);
 
-                if (uploadError) {
-                    throw new Error('Error uploading image: ' + uploadError.message);
+                    if (uploadError) {
+                        throw new Error('Error uploading image: ' + uploadError.message);
+                    }
+
+                    // Get the public URL
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('vehicle-images')
+                        .getPublicUrl(fileName);
+                    
+                    imageUrls.push(publicUrl);
                 }
-
-                // Get the public URL
-                const { data: { publicUrl } } = supabase.storage
-                    .from('vehicle-images')
-                    .getPublicUrl(fileName);
-                
-                imageUrl = publicUrl;
             }
 
             // Create form data for PocketBase
@@ -103,22 +109,26 @@ export default function New() {
             formDataToSend.append('make', formData.make);
             formDataToSend.append('model', formData.model);
             formDataToSend.append('year', formData.year);
-            formDataToSend.append('price', parseFloat(formData.price));
+            formDataToSend.append('price', formData.price);
             formDataToSend.append('mileage', formData.mileage);
             formDataToSend.append('transmission', formData.transmission);
             formDataToSend.append('fuelType', formData.fuelType);
             formDataToSend.append('user', authData.id);
-            if (imageUrl) {
-                formDataToSend.append('image_url', imageUrl);
+            if (imageUrls.length > 0) {
+                // Store the array of image URLs as a JSON string
+                formDataToSend.append('image_urls', JSON.stringify(imageUrls));
+                // Keep the first image as the main image_url for backwards compatibility
+                formDataToSend.append('image_url', imageUrls[0]);
             }
 
             // Create vehicle listing in PocketBase
             await pb.collection('cars').create(formDataToSend);
 
+            setSuccess(true);
             // Reset form
             setFormData({
-                description: '',
                 title: '',
+                description: '',
                 make: '',
                 model: '',
                 year: '',
@@ -127,12 +137,9 @@ export default function New() {
                 transmission: TRANSMISSIONS[0],
                 fuelType: FUEL_TYPES[0],
             });
-            setImage(null);
-            setPreview('');
-            setSuccess(true);
-
-            // Clear success message after 3 seconds
-            setTimeout(() => setSuccess(false), 3000);
+            setImages([]);
+            setPreviews([]);
+            
         } catch (err) {
             setError(err.message);
         } finally {
@@ -301,19 +308,25 @@ export default function New() {
                             </div>
 
                             <div>
-                                <label className="block mb-2">Feature Image</label>
+                                <label className="block mb-2">Feature Images</label>
                                 <input
                                     type="file"
+                                    multiple
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     className="w-full p-2 border rounded"
                                 />
-                                {preview && (
-                                    <img
-                                        src={preview}
-                                        alt="Preview"
-                                        className="mt-2 max-w-xs rounded"
-                                    />
+                                {previews.length > 0 && (
+                                    <div className="mt-2">
+                                        {previews.map((preview, index) => (
+                                            <img
+                                                key={index}
+                                                src={preview}
+                                                alt="Preview"
+                                                className="max-w-xs rounded mr-2"
+                                            />
+                                        ))}
+                                    </div>
                                 )}
                             </div>
 
