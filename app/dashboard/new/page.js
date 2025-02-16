@@ -1,16 +1,27 @@
 "use client"
 import { useState } from 'react';
 import pb from '../../../lib/pocketbase';
+import supabase from '../../../lib/supabase';
 import { UserSidebar } from '../components/sidebar-app';
 import Navbar from '../../components/navbar';
 
 const LISTING_TYPES = [
-  'Property',
-  'Car',
-  'Job',
-  'hotel',
-  'Logistics',
-  'Other'
+  'Accomodation',
+  'Commercial',
+  'Real Estate',
+  'Transport',
+  'Business',
+  'Mind, Body & Soul',
+  'Online-Shopping',
+  'Electronics & Gadgets',
+  'Education',
+  'Jobs',
+  'Entertainment',
+  'Healthcare',
+  'Services',
+  'Car Sales/Rentals',
+  'Hotel & Tourism',
+  'Office, Home & Garden',
 ];
 
 export default function New() {
@@ -20,8 +31,8 @@ export default function New() {
     type: LISTING_TYPES[0],
     price: '',
   });
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState('');
+  const [images, setImages] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -35,10 +46,14 @@ export default function New() {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      setImages(files);
+      // Create preview URLs for all selected images
+      const newPreviews = files.map(file => URL.createObjectURL(file));
+      // Revoke old preview URLs to avoid memory leaks
+      previews.forEach(preview => URL.revokeObjectURL(preview));
+      setPreviews(newPreviews);
     }
   };
 
@@ -54,16 +69,44 @@ export default function New() {
         throw new Error('You must be logged in to create a post');
       }
 
-      // Create form data for the request
+      let imageUrls = [];
+      
+      if (images.length > 0) {
+        // Upload all images to Supabase Storage
+        for (const image of images) {
+          const fileExt = image.name.split('.').pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const { data, error: uploadError } = await supabase.storage
+            .from('listing-images')
+            .upload(fileName, image);
+
+          if (uploadError) {
+            throw new Error('Error uploading image: ' + uploadError.message);
+          }
+
+          // Get the public URL
+          const { data: { publicUrl } } = supabase.storage
+            .from('listing-images')
+            .getPublicUrl(fileName);
+          
+          imageUrls.push(publicUrl);
+        }
+      }
+
+      // Create form data for PocketBase
       const formDataToSend = new FormData();
       formDataToSend.append('name', formData.name);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('type', formData.type);
       formDataToSend.append('price', parseFloat(formData.price));
-      formDataToSend.append('user', authData.id); // Associate post with user ID
-      formDataToSend.append('username', authData.username); // Store username with post
-      if (image) {
-        formDataToSend.append('image', image);
+      formDataToSend.append('user', authData.id);
+      formDataToSend.append('username', authData.username);
+      
+      if (imageUrls.length > 0) {
+        // Store the array of image URLs as a JSON string
+        formDataToSend.append('image_urls', JSON.stringify(imageUrls));
+        // Keep the first image as the main image_url for backwards compatibility
+        formDataToSend.append('image_url', imageUrls[0]);
       }
 
       // Using the imported pb instance
@@ -76,8 +119,8 @@ export default function New() {
         type: LISTING_TYPES[0],
         price: '',
       });
-      setImage(null);
-      setPreview('');
+      setImages([]);
+      setPreviews([]);
       setSuccess(true);
       
       // Clear success message after 3 seconds
@@ -165,20 +208,28 @@ export default function New() {
                 />
               </div>
               
-              <div>
-                <label className="block mb-2">Feature Image</label>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Images
+                </label>
                 <input
                   type="file"
                   accept="image/*"
+                  multiple
                   onChange={handleImageChange}
                   className="w-full p-2 border rounded"
                 />
-                {preview && (
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="mt-2 max-w-xs rounded"
-                  />
+                {previews.length > 0 && (
+                  <div className="mt-4 grid grid-cols-3 gap-4">
+                    {previews.map((preview, index) => (
+                      <img
+                        key={index}
+                        src={preview}
+                        alt={`Preview ${index + 1}`}
+                        className="w-full h-32 object-cover rounded"
+                      />
+                    ))}
+                  </div>
                 )}
               </div>
               

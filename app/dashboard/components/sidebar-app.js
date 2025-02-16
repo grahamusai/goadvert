@@ -14,7 +14,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { FaSignOutAlt, FaCar, FaFileAlt } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { FaBoxArchive } from "react-icons/fa6";
-import { FaMoneyBillWave } from "react-icons/fa";
+import { FaMoneyBillWave, FaClipboardList } from "react-icons/fa";
 import { LuBuilding2 } from "react-icons/lu";
 
 export function UserSidebar() {
@@ -72,6 +72,13 @@ export function UserSidebar() {
                     <div className=" flex items-center text-slate-300 ">
                       <FaCar />
                       <h2 className="pl-3">Vehicle</h2>
+                    </div>
+                  </a>
+                  <hr className="my-3" />
+                  <a href="/dashboard/new">
+                    <div className=" flex items-center text-slate-300 ">
+                      <FaClipboardList />
+                      <h2 className="pl-3">Other Listing</h2>
                     </div>
                   </a>
                 </PopoverContent>
