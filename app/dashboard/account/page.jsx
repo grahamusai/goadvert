@@ -33,6 +33,10 @@ const Account = () => {
             <Input id="email" type="email" placeholder="Enter your email" />
           </div>
           <div className="space-y-2">
+            <Label htmlFor="email">Whatsapp Number</Label>
+            <Input id="number" type="number" placeholder="Enter WhatApp Number" />
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="email">Upgrade Account</Label>
             <select
               name="type"
