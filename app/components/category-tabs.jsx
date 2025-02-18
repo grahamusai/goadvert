@@ -52,7 +52,7 @@ export function CategoryTabs() {
         </TabsList>
 
         {/* Content */}
-        
+
         <TabsContent value="properties" className="">
           <div className="">
             {userproperties.map((property) => (
@@ -71,7 +71,7 @@ export function CategoryTabs() {
         </TabsContent>
       </Tabs>
       <div className="md:hidden">
-      <Categories />
+        <Categories />
       </div>
     </>
   )

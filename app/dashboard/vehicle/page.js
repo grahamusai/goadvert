@@ -10,6 +10,9 @@ const LISTING_TYPES = [
     'Truck',
     'Motorcycle',
     'Bike',
+    'SUV',
+    'Van',
+    'Sedan',
     'Boat',
     'Other'
 ];

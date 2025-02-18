@@ -74,13 +74,13 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <div className=" items-center gap-2 flex">
           <Link href="#" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
-            Buy
+            Explore
           </Link>
           <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
             Sell
           </Link>
           <Link href="/payment" variant="ghost" className='hover:text-blue-500 transition-colors text-sm'>
-            Rent
+            Advertise
           </Link>
           <Link href="/login" variant="ghost" className='hover:text-blue-500 transition-colors text-2xl'>
             {/* <MdSupportAgent /> */}
@@ -118,9 +118,9 @@ export default function Navbar() {
               Logout
             </button>
           ) : (
-            <a href="/login" className="text-sm hover:text-primary">
+            <Link href="/login" className="text-sm hover:text-primary">
               Login
-            </a>
+            </Link>
           )}
         </div>
       </div>

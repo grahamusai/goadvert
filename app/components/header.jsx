@@ -8,8 +8,8 @@ export default function PropertySearch() {
     <section>
       <div className="w-full bg-[#020B2D] py-12 px-4">
         <div className="container mx-auto max-w-7xl ">
-          <h1 className="text-center text-4xl md:text-6xl font-bold text-white mb-4">
-            Rent, Buy, Sell
+          <h1 className="text-center text-3xl md:text-6xl font-bold text-white mb-4">
+            Advertise . Rent . Buy . Sell
           </h1>
 
 

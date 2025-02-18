@@ -41,8 +41,8 @@ export default function BentoGrid() {
         {locations.map((location, index) => {
           // Define the column span classes based on index
           const isWide = index === 3 // Bulawayo
-          const colSpanClass =   "md:col-span-2"
-          
+          const colSpanClass = "md:col-span-2"
+
           return (
             <div
               key={location.city}
@@ -73,7 +73,7 @@ export default function BentoGrid() {
               </div>
 
               {/* Clickable Area */}
-              <a href="#" className="absolute inset-0">
+              <a href="/" className="absolute inset-0">
                 <span className="sr-only">View listings in {location.city}</span>
               </a>
             </div>

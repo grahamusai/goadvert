@@ -18,7 +18,6 @@ export default function Home() {
       <Navbar />
       <Header />  
       <CategoryTabs />
-      {/* <Popular /> */}
       <Services />
       <Highlights />
       <Ads />

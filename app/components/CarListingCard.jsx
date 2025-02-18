@@ -53,7 +53,7 @@ function CarListingCard(props) {
             {images.length > 0 ? (
               <>
                 <Image
-                  src={images[currentImageIndex] || "/images/car-placeholder.jpg"}
+                  src={images[currentImageIndex] || "/images/image.png"}
                   alt={`${year} ${make} ${model}`}
                   layout="fill"
                   objectFit="cover"
