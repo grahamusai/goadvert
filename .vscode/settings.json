@@ -1,6 +1,6 @@
 {
     "workbench.colorTheme": "React Theme",
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.iconTheme": "symbols",
     "workbench.productIconTheme": "fluent-icons",
     "editor.fontLigatures": true,
     "editor.fontFamily": "FiraCode Nerd Font ,Consolas, 'Courier New', monospace",

@@ -14,6 +14,8 @@ import { Input } from "../../components/ui/input"
 import { Textarea } from "../../components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
 import { Archive } from "lucide-react"
+import Chart from "./components/chart"
+import RevenueChart from "./components/revenueChart"
 
 export default function Dashboard() {
   const [userContent, setUserContent] = useState({
@@ -123,61 +125,102 @@ export default function Dashboard() {
   }
 
   const renderContent = (items, collectionName) => {
-    return items.map((item) => (
-      <Card key={item.id} className="overflow-hidden">
-        <div className="relative w-full h-48">
-          {item.image && (
-            <Image
-              src={`${process.env.NEXT_PUBLIC_POCKETBASE_URL}/api/files/${item.collectionId}/${item.id}/${item.image}`}
-              alt={item.name}
-              fill
-              className="object-cover"
-            />
-          )}
-        </div>
-        <CardHeader>
-          <CardTitle>{item.name}</CardTitle>
-          <CardDescription>${item.price}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-600">{item.description}</p>
-        </CardContent>
-        <CardFooter className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handleEdit(item, collectionName)}
-          >
-            Edit
-          </Button>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => handleArchive(collectionName, item.id)}
-                  disabled={item.isArchived}
-                >
-                  <Archive className="h-4 w-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                {item.isArchived ? 'Archived' : 'Archive'}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => handleDeleteClick(collectionName, item.id)}
-          >
-            Delete
-          </Button>
-        </CardFooter>
-      </Card>
-    ))
-  }
+    return items.map((item) => {
+      const [currentImageIndex, setCurrentImageIndex] = useState(0);
+      const images = item.image_urls ? JSON.parse(item.image_urls) : (item.image ? [`${process.env.NEXT_PUBLIC_POCKETBASE_URL}/api/files/${item.collectionId}/${item.id}/${item.image}`] : []);
+
+      const nextImage = () => {
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      };
+
+      const previousImage = () => {
+        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+      };
+
+      return (
+        <Card key={item.id} className="overflow-hidden">
+          <div className="relative w-full h-48">
+            {images.length > 0 ? (
+              <>
+                <Image
+                  src={images[currentImageIndex] || "/images/image.png"}
+                  alt={item.name}
+                  fill
+                  className="object-cover"
+                />
+                {images.length > 1 && (
+                  <div className="absolute inset-0 flex items-center justify-between p-2">
+                    <button
+                      onClick={previousImage}
+                      className="bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-75"
+                    >
+                      ←
+                    </button>
+                    <button
+                      onClick={nextImage}
+                      className="bg-black bg-opacity-50 text-white rounded-full p-2 hover:bg-opacity-75"
+                    >
+                      →
+                    </button>
+                  </div>
+                )}
+                <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+                  {currentImageIndex + 1}/{images.length}
+                </div>
+              </>
+            ) : (
+              <Image
+                src="/images/image.png"
+                alt={item.name}
+                fill
+                className="object-cover"
+              />
+            )}
+          </div>
+          <CardHeader>
+            <CardTitle>{item.name}</CardTitle>
+            <CardDescription>${item.price}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-600">{item.description}</p>
+          </CardContent>
+          <CardFooter className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleEdit(item, collectionName)}
+            >
+              Edit
+            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => handleArchive(collectionName, item.id)}
+                    disabled={item.isArchived}
+                  >
+                    <Archive className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {item.isArchived ? 'Archived' : 'Archive'}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => handleDeleteClick(collectionName, item.id)}
+            >
+              Delete
+            </Button>
+          </CardFooter>
+        </Card>
+      );
+    });
+  };
 
   return (
     <>
@@ -185,6 +228,14 @@ export default function Dashboard() {
       <UserSidebar />
       <div className="flex max-w-6xl mx-auto ml-64">
         <main className="flex-1 p-6">
+          <div className=" flex gap-5">
+            <div className="w-full md:w-1/2">
+              <Chart />
+            </div>
+            <div className="w-full md:w-1/2">
+              <RevenueChart />
+            </div>
+          </div>
           <div className="space-y-8">
             <section>
               <h1 className="text-2xl font-bold mb-6">My Posts</h1>

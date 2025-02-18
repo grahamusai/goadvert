@@ -36,7 +36,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="flex h-24 items-center max-w-6xl mx-auto justify-between gap-4  px-4 md:px-6">
+    <nav className="z-50 flex h-24 items-center max-w-6xl mx-auto justify-between gap-4  px-4 md:px-6">
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-14 w-14 overflow-hidden  ">

@@ -10,6 +10,7 @@ import {
 import { Archive } from "lucide-react"
 import { FaHeart } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
+import { GoFileDirectoryFill } from "react-icons/go";
 import { FaCirclePlus, FaBoxArchive } from "react-icons/fa6";
 import { FaSignOutAlt, FaCar, FaFileAlt } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
@@ -84,6 +85,13 @@ export function UserSidebar() {
                     <div className=" flex items-center text-slate-300 ">
                       <FaCar />
                       <h2 className="pl-3">Vehicle</h2>
+                    </div>
+                  </a>
+                  <hr className="my-3" />
+                  <a href="/dashboard/business">
+                    <div className=" flex items-center text-slate-300 ">
+                      <GoFileDirectoryFill />
+                      <h2 className="pl-3">Business Listing</h2>
                     </div>
                   </a>
                   <hr className="my-3" />
