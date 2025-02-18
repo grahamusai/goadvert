@@ -9,12 +9,22 @@ import { Button } from "../../components/ui/button"
 import Image from "next/image"
 import pb from "../../lib/pocketbase"
 import { toast } from "sonner"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../../components/ui/dialog"
+import { Input } from "../../components/ui/input"
+import { Textarea } from "../../components/ui/textarea"
 
 export default function Dashboard() {
   const [userContent, setUserContent] = useState({
     posts: [],
     properties: [],
     cars: []
+  })
+  const [editItem, setEditItem] = useState(null)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [editForm, setEditForm] = useState({
+    name: '',
+    description: '',
+    price: ''
   })
 
   const fetchUserContent = async () => {
@@ -63,6 +73,32 @@ export default function Dashboard() {
     }
   }
 
+  const handleEdit = (item, collectionName) => {
+    setEditItem({ ...item, collectionName })
+    setEditForm({
+      name: item.name,
+      description: item.description,
+      price: item.price
+    })
+    setIsEditModalOpen(true)
+  }
+
+  const handleUpdate = async () => {
+    try {
+      await pb.collection(editItem.collectionName).update(editItem.id, {
+        name: editForm.name,
+        description: editForm.description,
+        price: editForm.price
+      })
+      toast.success('Item updated successfully')
+      setIsEditModalOpen(false)
+      fetchUserContent() // Refresh the content
+    } catch (error) {
+      console.error('Error updating item:', error)
+      toast.error('Failed to update item')
+    }
+  }
+
   const renderContent = (items, collectionName) => {
     return items.map((item) => (
       <Card key={item.id} className="overflow-hidden">
@@ -83,13 +119,20 @@ export default function Dashboard() {
         <CardContent>
           <p className="text-sm text-gray-600">{item.description}</p>
         </CardContent>
-        <CardFooter>
-          <Button 
-            variant="destructive" 
+        <CardFooter className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleEdit(item, collectionName)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="destructive"
             size="sm"
             onClick={() => handleDelete(collectionName, item.id)}
           >
-            Delete
+            Archive
           </Button>
         </CardFooter>
       </Card>
@@ -126,6 +169,48 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Item</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <label htmlFor="name">Title</label>
+              <Input
+                id="name"
+                value={editForm.name}
+                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="description">Description</label>
+              <Textarea
+                id="description"
+                value={editForm.description}
+                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+              />
+            </div>
+            <div className="grid gap-2">
+              <label htmlFor="price">Price</label>
+              <Input
+                id="price"
+                type="number"
+                value={editForm.price}
+                onChange={(e) => setEditForm({ ...editForm, price: e.target.value })}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleUpdate}>
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }

@@ -1,4 +1,4 @@
-
+import Link from "next/link"
 import {
   Building2,
   Car,
@@ -22,12 +22,14 @@ import {
 function CategoryIcon({ icon, label }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="w-16 h-16 md:w-20 shadow-lg shadow-blue-200 md:h-20 rounded-full bg-blue-600 flex items-center justify-center text-white">
-        {icon}
-      </div>
+      <Link href={`/category/${encodeURIComponent(label.toLowerCase().replace(/[\s&]+/g, '-'))}`}>
+        <div className="w-16 h-16 md:w-20 shadow-lg shadow-blue-200 md:h-20 rounded-full bg-blue-600 flex items-center justify-center text-white">
+          {icon}
+        </div>
+      </Link>
       <span className="text-xs md:text-sm text-center font-medium">{label}</span>
     </div>
-  )
+  );
 }
 
 export default function Categories() {

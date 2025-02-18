@@ -95,7 +95,7 @@ export function UserSidebar() {
             <li>
               <a href="#" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
                 <FaHeart />
-                <span className="flex-1 ms-3 whitespace-nowrap">Favourite Ads</span>
+                <span className="flex-1 ms-3 whitespace-nowrap">Archived Listings</span>
               </a>
             </li>
             <li>
