@@ -9,6 +9,11 @@ import { Label } from "../../../components/ui/label"
 import { toast } from "sonner"
 
 const Account = () => {
+  const LISTING_TYPES = [
+    'Basic',
+    'Premium',
+    'Business',
+  ];
   return (
     <>
       <Navbar />
@@ -26,6 +31,20 @@ const Account = () => {
           <div className="space-y-2">
             <Label htmlFor="email">Change Email</Label>
             <Input id="email" type="email" placeholder="Enter your email" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Upgrade Account</Label>
+            <select
+              name="type"
+
+              className="w-full p-2 border rounded"
+            >
+              {LISTING_TYPES.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Change Password</Label>
