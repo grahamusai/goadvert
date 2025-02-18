@@ -1,10 +1,7 @@
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 export default function CategoryPage({ params }) {
   const category = params.category;
-
-  const displayCategory = category
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
 
   return (
     <div className="p-6">
@@ -15,7 +12,9 @@ export default function CategoryPage({ params }) {
         <ArrowLeft className="w-4 h-4" />
         Back to Categories
       </Link>
-      <h1 className="text-3xl font-bold">{displayCategory}</h1>
+      {/* <h1 className="text-3xl font-bold">{displayCategory}</h1> */}
+
+      <h1>{category}</h1>
     </div>
   );
 }

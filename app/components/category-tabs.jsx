@@ -37,7 +37,7 @@ export function CategoryTabs() {
 
   return (
     <>
-      <Tabs defaultValue="all" className="hidden md:block w-full my-4 max-w-[80rem] mx-auto">
+      <Tabs defaultValue="properties" className="hidden md:block w-full my-4 max-w-[80rem] mx-auto">
         {/* Headers */}
         <TabsList>
           <TabsTrigger value="properties" className="w-full "><LuBuilding2 />&nbsp;Properties</TabsTrigger>
@@ -48,7 +48,6 @@ export function CategoryTabs() {
           <TabsTrigger value="logistics"><GiAmpleDress />&nbsp;Clothing</TabsTrigger>
           <TabsTrigger value="business"><GoFileDirectoryFill />&nbsp;Business Directory</TabsTrigger>
           <TabsTrigger value="all" className="w-full bg-blue-500 text-white"><BiCategory />&nbsp;All categories</TabsTrigger>
-
         </TabsList>
 
         {/* Content */}

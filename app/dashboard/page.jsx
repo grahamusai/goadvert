@@ -112,9 +112,9 @@ export default function Dashboard() {
   const handleArchive = async (collectionName, id) => {
     try {
       await pb.collection(collectionName).update(id, {
-        archived: true
+        isArchived: true
       })
-      toast.success('Item archived successfully')
+      toast.success('Item archived successfully! You can view it in the Archived section.')
       fetchUserContent() // Refresh the content
     } catch (error) {
       console.error('Error archiving item:', error)
@@ -157,13 +157,13 @@ export default function Dashboard() {
                   variant="secondary"
                   size="sm"
                   onClick={() => handleArchive(collectionName, item.id)}
-                  disabled={item.archived}
+                  disabled={item.isArchived}
                 >
                   <Archive className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {item.archived ? 'Archived' : 'Archive'}
+                {item.isArchived ? 'Archived' : 'Archive'}
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

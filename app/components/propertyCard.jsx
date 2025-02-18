@@ -1,9 +1,20 @@
 'use client'
 import supabase from "../../lib/supabase"
-import { Card, CardContent } from "../../components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
+import { Button } from "../../components/ui/button"
 import { Skeleton } from "../../components/ui/skeleton"
 import { useEffect, useState } from "react"
 import pb from "../../lib/pocketbase"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../../components/ui/drawer"
 
 function PropertyItem({ property }) {
   // Parse image_urls if it's a string
@@ -52,7 +63,7 @@ function PropertyItem({ property }) {
       </div>
       <CardContent className="p-4 space-y-2">
         <h2 className="font-bold text-lg">{property.name}</h2>
-        <p className="text-sm text-muted-foreground">{property.description}</p>
+        {/* <p className="text-sm text-muted-foreground">{property.description}</p> */}
         <div className="flex items-center justify-between mt-2">
           <p className="text-sm text-muted-foreground">
             {property.city}, {property.country}
@@ -66,6 +77,25 @@ function PropertyItem({ property }) {
           <p className="text-sm text-muted-foreground">/{property.term}</p>
         </div>
       </CardContent>
+      <CardFooter className="p-4 pt-0">
+        {/* Drawer */}
+        <Drawer>
+          <DrawerTrigger className="w-full bg-blue-500 py-2 text-white rounded-sm">View Details</DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle className="text-xl font-bold">{property.name}</DrawerTitle>
+              <DrawerDescription className="text-lg font-medium">{property.description}</DrawerDescription>
+              <DrawerDescription className="text-lg font-bold">{property.price}</DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter>
+              <Button className="w-full bg-blue-500 py-2 text-white rounded-sm">Add To Cart</Button>
+              <DrawerClose>
+                <Button variant="outline">Cancel</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      </CardFooter>
     </Card>
   );
 }

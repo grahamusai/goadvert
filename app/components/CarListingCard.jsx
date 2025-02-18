@@ -118,26 +118,26 @@ function CarListingCard(props) {
           </div>
         </CardContent>
         <CardFooter className="p-4 pt-0">
-           {/* Drawer */}
-      <Drawer>
-        <DrawerTrigger className="w-full bg-blue-500 py-2 text-white rounded-sm">View Details</DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Additional Car Details</DrawerTitle>
-            <DrawerDescription>{description}</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter>
-            <Button>Add To Cart</Button>
-            <DrawerClose>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+          {/* Drawer */}
+          <Drawer>
+            <DrawerTrigger className="w-full bg-blue-500 py-2 text-white rounded-sm">View Details</DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Additional Car Details</DrawerTitle>
+                <DrawerDescription>{description}</DrawerDescription>
+              </DrawerHeader>
+              <DrawerFooter>
+                <Button>Add To Cart</Button>
+                <DrawerClose>
+                  <Button variant="outline">Cancel</Button>
+                </DrawerClose>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
         </CardFooter>
       </Card>
 
-     
+
 
     </>
 
