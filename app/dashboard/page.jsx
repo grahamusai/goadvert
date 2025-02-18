@@ -12,6 +12,8 @@ import { toast } from "sonner"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../../components/ui/dialog"
 import { Input } from "../../components/ui/input"
 import { Textarea } from "../../components/ui/textarea"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
+import { Archive } from "lucide-react"
 
 export default function Dashboard() {
   const [userContent, setUserContent] = useState({
@@ -21,6 +23,8 @@ export default function Dashboard() {
   })
   const [editItem, setEditItem] = useState(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [deleteItem, setDeleteItem] = useState(null)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [editForm, setEditForm] = useState({
     name: '',
     description: '',
@@ -62,10 +66,16 @@ export default function Dashboard() {
     }
   }, [])
 
-  const handleDelete = async (collectionName, id) => {
+  const handleDeleteClick = (collectionName, id) => {
+    setDeleteItem({ collectionName, id })
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleDeleteConfirm = async () => {
     try {
-      await pb.collection(collectionName).delete(id)
+      await pb.collection(deleteItem.collectionName).delete(deleteItem.id)
       toast.success('Item deleted successfully')
+      setIsDeleteModalOpen(false)
       fetchUserContent() // Refresh the content
     } catch (error) {
       console.error('Error deleting item:', error)
@@ -99,6 +109,19 @@ export default function Dashboard() {
     }
   }
 
+  const handleArchive = async (collectionName, id) => {
+    try {
+      await pb.collection(collectionName).update(id, {
+        archived: true
+      })
+      toast.success('Item archived successfully')
+      fetchUserContent() // Refresh the content
+    } catch (error) {
+      console.error('Error archiving item:', error)
+      toast.error('Failed to archive item')
+    }
+  }
+
   const renderContent = (items, collectionName) => {
     return items.map((item) => (
       <Card key={item.id} className="overflow-hidden">
@@ -127,12 +150,29 @@ export default function Dashboard() {
           >
             Edit
           </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => handleArchive(collectionName, item.id)}
+                  disabled={item.archived}
+                >
+                  <Archive className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {item.archived ? 'Archived' : 'Archive'}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <Button
             variant="destructive"
             size="sm"
-            onClick={() => handleDelete(collectionName, item.id)}
+            onClick={() => handleDeleteClick(collectionName, item.id)}
           >
-            Archive
+            Delete
           </Button>
         </CardFooter>
       </Card>
@@ -207,6 +247,24 @@ export default function Dashboard() {
             </Button>
             <Button onClick={handleUpdate}>
               Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Delete</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p>Are you sure you want to delete this item? This action cannot be undone.</p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDeleteModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDeleteConfirm}>
+              Delete
             </Button>
           </DialogFooter>
         </DialogContent>
