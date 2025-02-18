@@ -116,7 +116,7 @@ export function UserSidebar() {
               </a>
             </li>
             <li>
-              <a href="#" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
+              <a href="/dashboard/account" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
                 <IoSettings />
                 <span className="flex-1 ms-3 whitespace-nowrap">Account Settings</span>
               </a>
