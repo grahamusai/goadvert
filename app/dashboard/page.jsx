@@ -2,7 +2,7 @@
 
 import { UserSidebar } from "./components/sidebar-app"
 import { SidebarProvider } from "../../components/ui/sidebar"
-import Navbar from "../components/navbar"
+import Navbar from "./components/navbar"
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../components/ui/card"
 import { Button } from "../../components/ui/button"
@@ -16,8 +16,17 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../
 import { Archive } from "lucide-react"
 import Chart from "./components/chart"
 import RevenueChart from "./components/revenueChart"
+import { useRouter } from "next/navigation"
 
 export default function Dashboard() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!pb.authStore.isValid) {
+      router.push('/login');
+    }
+  }, [router]);
+
   const [userContent, setUserContent] = useState({
     posts: [],
     properties: [],

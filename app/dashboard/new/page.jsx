@@ -2,11 +2,10 @@
 import React, { useEffect } from 'react'
 import { UserSidebar } from '../components/sidebar-app';
 import Navbar from '../components/navbar';
-import BusinessListingForm from '../components/businessForm';
-import { useRouter } from 'next/navigation';
 import pb from '../../../lib/pocketbase';
+import { useRouter } from 'next/navigation';
 
-const Business = () => {
+const NewListing = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -20,11 +19,11 @@ const Business = () => {
       <Navbar />
       <UserSidebar />
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Add New Business</h1>
-        <BusinessListingForm />
+        <h1 className="text-2xl font-bold mb-6">Create New Listing</h1>
+        {/* Add your new listing form component here */}
       </div>
     </>
   )
 }
 
-export default Business
+export default NewListing

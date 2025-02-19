@@ -1,12 +1,13 @@
 "use client"
 import * as React from "react"
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import pb from '../../../lib/pocketbase' // Import pocketbase instance
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "../../../components/ui/popover"
+} from "../../../components/ui/popover";
 import { Archive } from "lucide-react"
 import { FaHeart } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -18,6 +19,8 @@ import { FaMoneyBillWave, FaClipboardList } from "react-icons/fa";
 import { LuBuilding2 } from "react-icons/lu";
 
 export function UserSidebar() {
+
+  const router = useRouter();
 
   const [user, setUser] = useState(null)
   const [postsCount, setPostsCount] = useState(0)
@@ -131,10 +134,13 @@ export function UserSidebar() {
             </li>
 
             <li>
-              <a href="#" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
+              <button onClick={() => {
+                pb.authStore.clear();
+                router.push('/');
+              }} className="w-full flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
                 <FaSignOutAlt />
-                <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
-              </a>
+                <span className="pl-2">Sign Out</span>
+              </button>
             </li>
           </ul>
         </div>
