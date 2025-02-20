@@ -9,31 +9,12 @@ import PropertyCard from "./propertyCard";
 import Categories from "./categories";
 import CarCard from "./carCard";
 import { GiAmpleDress } from "react-icons/gi";
-import pb from '../../lib/pocketbase'
+import PropertyListingCard from "./propertyListingCard";
 import { useEffect, useState } from "react";
 
 export function CategoryTabs() {
 
-  const [userproperties, setUserproperties] = useState([]);
 
-  useEffect(() => {
-    const fetchUserproperties = async () => {
-      try {
-        const userId = pb.authStore.model.id
-        const records = await pb.collection('properties').getList(1, 50, {
-          filter: `user = "${userId}"`,
-          sort: '-created'
-        });
-        setUserproperties(records.items)
-      } catch (error) {
-        console.error('Error fetching properties:', error)
-      }
-    }
-
-    if (pb.authStore.isValid) {
-      fetchUserproperties()
-    }
-  }, [])
 
   return (
     <>
@@ -53,11 +34,7 @@ export function CategoryTabs() {
         {/* Content */}
 
         <TabsContent value="properties" className="">
-          <div className="">
-            {userproperties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
+          <PropertyListingCard />
         </TabsContent>
         <TabsContent value="cars"><CarCard /></TabsContent>
         <TabsContent value="logistics">Logistics</TabsContent>

@@ -80,7 +80,7 @@ function CarListingCard(props) {
               </>
             ) : (
               <Image
-                src="/images/car-placeholder.jpg"
+                src="/images/image.png"
                 alt={`${year} ${make} ${model}`}
                 layout="fill"
                 objectFit="cover"

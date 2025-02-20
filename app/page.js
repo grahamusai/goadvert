@@ -14,9 +14,9 @@ import { FloatingNavbar } from "./components/floatingNav";
 export default function Home() {
   return (
     <div className="overflow-hidden">
-      
+
       <Navbar />
-      <Header />  
+      <Header />
       <CategoryTabs />
       <Services />
       <Highlights />
@@ -30,7 +30,7 @@ export default function Home() {
           href="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-blue-600 text-white font-medium rounded-full px-4 py-2 flex items-center justify-center hover:bg-yellow-600 transition duration-300 ease-in-out shadow-lg"
+          className="bg-blue-600 text-white font-medium rounded-full px-4 py-2 flex items-center justify-center hover:bg-blue-800 transition duration-300 ease-in-out shadow-lg"
         >
           <span className="text-lg mr-2 hidden md:block">
             <MdContactSupport />

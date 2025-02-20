@@ -4,35 +4,22 @@ import pb from '../../lib/pocketbase'
 import { useRouter } from 'next/navigation'
 import Image from "next/image"
 import Link from "next/link"
-import { Apple, Facebook } from "lucide-react"
 import { Eye, EyeOff } from "lucide-react";
-import { Button } from "../../components/ui/button"
-import { Checkbox } from "../../components/ui/checkbox"
+import { Button } from "../../components/ui/button";
+import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
 
-export default function LoginPage() {
+export default function signup() {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false); // New state
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
 
-    try {
-      await pb.collection('users').authWithPassword(email, password);
-      router.push('/dashboard'); // Redirect to dashboard after successful login
-    } catch (err) {
-      setError('Invalid email or password');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGoogleLogin = async () => {
     try {
@@ -47,6 +34,38 @@ export default function LoginPage() {
     } catch (err) {
       setError('Google authentication failed');
       console.error('Google auth error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateAccount = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError('');
+
+      // Create a new record in the users collection
+      const record = await pb.collection('users').create({
+        username: username,
+        email: email,
+        password: password,
+        passwordConfirm: password, // Required by PocketBase
+      });
+
+      // After successful creation, authenticate the user
+      const authData = await pb.collection('users').authWithPassword(
+
+        email,
+        password
+      );
+
+      if (authData) {
+        router.push('/dashboard');
+      }
+    } catch (err) {
+      setError(err.message || 'Failed to create account');
+      console.error('Signup error:', err);
     } finally {
       setLoading(false);
     }
@@ -70,8 +89,20 @@ export default function LoginPage() {
       <div className="flex items-center justify-center p-8">
         <div className="w-full max-w-[400px] space-y-6">
           {error && <div className="text-red-500 text-sm">{error}</div>}
+          <h2 className="text-2xl font-bold mb-4">Create Account</h2>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleCreateAccount} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Username"
+                required
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -105,17 +136,16 @@ export default function LoginPage() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
+                {/* <Checkbox id="remember" />
                 <label
                   htmlFor="remember"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  <Link href="/signup" className="text-sm text-[#2D7FF9] hover:underline">
-                    Forgot Password?
-                  </Link>
-                </label>
+                  Keep me logged in
+                </label> */}
               </div>
-              <Link href="/signup" className="text-sm text-[#2D7FF9] hover:underline">
-                Sign Up?
+              <Link href="/login" className="text-sm text-[#2D7FF9] hover:underline">
+                Already have an account?
               </Link>
             </div>
 
@@ -124,7 +154,7 @@ export default function LoginPage() {
               className="w-full bg-[#2D7FF9] hover:bg-[#2D7FF9]/90"
               disabled={loading}
             >
-              {loading ? 'Signing in...' : 'SIGN IN'}
+              {loading ? 'Creating Account...' : 'SIGN UP'}
             </Button>
           </form>
 
