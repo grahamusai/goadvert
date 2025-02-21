@@ -55,7 +55,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Left side with logo */}
-      <div className="hidden md:flex bg-[#1D2B4E] items-center justify-center p-8">
+      <div className="hidden md:flex bg-[#1a2646] items-center justify-center p-8">
         <div className="relative w-48 h-48">
           <Image
             src="/images/Logo.png"
@@ -67,13 +67,14 @@ export default function LoginPage() {
       </div>
 
       {/* Right side with form */}
-      <div className="flex items-center justify-center p-8">
+      <div className="flex items-center bg-[#1a2646] justify-center p-8">
         <div className="w-full max-w-[400px] space-y-6">
           {error && <div className="text-red-500 text-sm">{error}</div>}
-
+          <h2 className="text-4xl font-bold mb-8 text-white">Welcome Back!</h2>
+          <h2 className="text-xl font-bold mb-4 text-white">Sign into our Account</h2>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-white">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -85,7 +86,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2 relative">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-white">Password</Label>
               <Input
                 id="password"
                 type={passwordVisible ? 'text' : 'password'}
@@ -115,7 +116,7 @@ export default function LoginPage() {
                 </label>
               </div>
               <Link href="/signup" className="text-sm text-[#2D7FF9] hover:underline">
-                Sign Up?
+                Dont have an account?
               </Link>
             </div>
 
@@ -134,7 +135,7 @@ export default function LoginPage() {
                 <div className="w-full border-t"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or sign in with</span>
+                <span className="bg-background px-2 text-[#2D7FF9]">Or sign in with</span>
               </div>
             </div>
 

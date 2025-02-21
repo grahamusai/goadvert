@@ -71,10 +71,9 @@ export function UserSidebar() {
                 <span className="ms-3">Dashboard</span>
               </a>
             </li>
-
             <li>
               <Popover>
-                <PopoverTrigger className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group"> <FaCirclePlus /><span className="flex-1 ms-3 whitespace-nowrap">Post an Ad</span></PopoverTrigger>
+                <PopoverTrigger className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group"> <FaCirclePlus /><span className="flex-1 ms-3 whitespace-nowrap">Create Listing</span></PopoverTrigger>
                 <PopoverContent className="w-80 bg-slate-800 ">
                   <a href="/dashboard/property" className="hover:bg-slate-900 dark:hover:bg-gray-700 group">
                     <div className=" flex items-center text-slate-300 ">
@@ -116,8 +115,9 @@ export function UserSidebar() {
             </li>
             <li>
               <a href="/dashboard/archived" className="flex items-center p-2 text-slate-300 rounded-lg dark:text-white hover:bg-slate-800 dark:hover:bg-gray-700 group">
-              <Archive className="h-4 w-4" />
+                <Archive className="h-4 w-4" />
                 <span className="flex-1 ms-3 whitespace-nowrap">Archived</span>
+                <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">{archivedPostsCount}</span>
               </a>
             </li>
             <li>

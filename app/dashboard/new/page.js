@@ -38,22 +38,18 @@ export default function New() {
   const [success, setSuccess] = useState(false);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0) {
-      setImages(files);
-      // Create preview URLs for all selected images
-      const newPreviews = files.map(file => URL.createObjectURL(file));
-      // Revoke old preview URLs to avoid memory leaks
-      previews.forEach(preview => URL.revokeObjectURL(preview));
-      setPreviews(newPreviews);
+    setImages(e.target.files);
+    setPreviews([]);
+    for (const file of e.target.files) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviews((prevPreviews) => [...prevPreviews, reader.result]);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -61,58 +57,41 @@ export default function New() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
-    try {
-      // Check if user is authenticated
-      const authData = pb.authStore.model;
-      if (!authData) {
-        throw new Error('You must be logged in to create a post');
-      }
+    setSuccess(false);
 
-      let imageUrls = [];
-      
+    try {
+      // Upload images to Supabase
+      const imageUrls = [];
       if (images.length > 0) {
-        // Upload all images to Supabase Storage
         for (const image of images) {
-          const fileExt = image.name.split('.').pop();
-          const fileName = `${Math.random()}.${fileExt}`;
+          const fileName = `${Date.now()}-${image.name}`;
           const { data, error: uploadError } = await supabase.storage
             .from('listing-images')
             .upload(fileName, image);
 
-          if (uploadError) {
-            throw new Error('Error uploading image: ' + uploadError.message);
-          }
+          if (uploadError) throw uploadError;
 
-          // Get the public URL
+          // Get the public URL for the uploaded image
           const { data: { publicUrl } } = supabase.storage
             .from('listing-images')
             .getPublicUrl(fileName);
-          
+
           imageUrls.push(publicUrl);
         }
       }
 
-      // Create form data for PocketBase
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('type', formData.type);
-      formDataToSend.append('price', parseFloat(formData.price));
-      formDataToSend.append('user', authData.id);
-      formDataToSend.append('username', authData.username);
-      
-      if (imageUrls.length > 0) {
-        // Store the array of image URLs as a JSON string
-        formDataToSend.append('image_urls', JSON.stringify(imageUrls));
-        // Keep the first image as the main image_url for backwards compatibility
-        formDataToSend.append('image_url', imageUrls[0]);
-      }
+      // Create post in PocketBase
+      const postData = {
+        ...formData,
+        image_url: imageUrls.join(','), // Store multiple image URLs as comma-separated string
+        created: new Date().toISOString(),
+        updated: new Date().toISOString(),
+        user: pb.authStore.model.id // Associate with current user
+      };
 
-      // Using the imported pb instance
-      await pb.collection('posts').create(formDataToSend);
-      
-      // Reset form
+      await pb.collection('posts').create(postData);
+
+      setSuccess(true);
       setFormData({
         name: '',
         description: '',
@@ -121,12 +100,9 @@ export default function New() {
       });
       setImages([]);
       setPreviews([]);
-      setSuccess(true);
-      
-      // Clear success message after 3 seconds
-      setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      setError(err.message || 'Something went wrong');
+      console.error('Error:', err);
+      setError(err.message || 'Failed to create listing');
     } finally {
       setLoading(false);
     }
@@ -135,56 +111,58 @@ export default function New() {
   return (
     <>
       <Navbar />
-      
-        <UserSidebar />
-        <div className="flex">
+
+      <UserSidebar />
+      <div className="flex">
         <main className="flex-1 p-6">
           <div className="max-w-2xl mx-auto">
             <h1 className="text-2xl font-bold mb-6">Add New Listing</h1>
-            
+
             {error && (
               <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                 {error}
               </div>
             )}
-            
+
             {success && (
               <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                LISTING added successfully!
+                Listing added successfully!
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block mb-2">Name</label>
+                <label className="block text-sm font-medium text-gray-700">Name/Title</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  required
                   className="w-full p-2 border rounded active:outline-none"
+                  required
                 />
               </div>
-              
+
               <div>
-                <label className="block mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
-                  required
+                  rows={4}
                   className="w-full p-2 border rounded h-32"
+                  required
                 />
               </div>
-              
+
               <div>
-                <label className="block mb-2">Type</label>
+                <label className="block text-sm font-medium text-gray-700">Type</label>
                 <select
                   name="type"
                   value={formData.type}
                   onChange={handleInputChange}
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded active:outline-none"
+                  required
                 >
                   {LISTING_TYPES.map((type) => (
                     <option key={type} value={type}>
@@ -193,54 +171,50 @@ export default function New() {
                   ))}
                 </select>
               </div>
-              
+
               <div>
-                <label className="block mb-2">Price</label>
+                <label className="block text-sm font-medium text-gray-700">Price</label>
                 <input
                   type="number"
                   name="price"
                   value={formData.price}
                   onChange={handleInputChange}
+                  className="w-full p-2 border rounded active:outline-none"
                   required
-                  min="0"
-                  step="0.01"
-                  className="w-full p-2 border rounded"
                 />
               </div>
-              
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Images
-                </label>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Images</label>
                 <input
                   type="file"
-                  accept="image/*"
                   multiple
+                  accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full p-2 border rounded"
+                  className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-blue-700 hover:file:bg-indigo-100"
                 />
-                {previews.length > 0 && (
-                  <div className="mt-4 grid grid-cols-3 gap-4">
-                    {previews.map((preview, index) => (
-                      <img
-                        key={index}
-                        src={preview}
-                        alt={`Preview ${index + 1}`}
-                        className="w-full h-32 object-cover rounded"
-                      />
-                    ))}
-                  </div>
-                )}
               </div>
-              
+
+              {previews.length > 0 && (
+                <div className="grid grid-cols-3 gap-4 mt-4">
+                  {previews.map((preview, index) => (
+                    <img
+                      key={index}
+                      src={preview}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-32 object-cover rounded-lg"
+                    />
+                  ))}
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full p-2 text-white rounded ${
-                  loading ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'
-                }`}
+                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${loading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
               >
-                {loading ? 'Adding LISTING...' : 'Add LISTING'}
+                {loading ? 'Creating...' : 'Create Listing'}
               </button>
             </form>
           </div>

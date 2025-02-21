@@ -6,9 +6,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../../components/ui/button";
-import { Checkbox } from "../../components/ui/checkbox";
 import { Input } from "../../components/ui/input"
 import { Label } from "../../components/ui/label"
+import { motion } from "motion/react"
 
 export default function signup() {
   const [username, setUsername] = useState('');
@@ -75,25 +75,30 @@ export default function signup() {
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
       {/* Left side with logo */}
       <div className="hidden md:flex bg-[#1D2B4E] items-center justify-center p-8">
-        <div className="relative w-48 h-48">
+        <motion.div
+          whileHover={{
+            scale: 1.05,
+            transition: { duration: 0.2 }
+          }}
+          className="relative w-48 h-48">
           <Image
             src="/images/Logo.png"
             alt="IAD Logo"
             fill
             className="object-contain"
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* Right side with form */}
       <div className="flex items-center justify-center p-8">
         <div className="w-full max-w-[400px] space-y-6">
           {error && <div className="text-red-500 text-sm">{error}</div>}
-          <h2 className="text-2xl font-bold mb-4">Create Account</h2>
-
+          <h2 className="text-4xl font-bold mb-8 text-[#1a2646]">Start Selling!</h2>
+          <h2 className="text-xl font-bold mb-4 text-[#1a2646]">Create an Account</h2>
           <form onSubmit={handleCreateAccount} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Username</Label>
+              <Label htmlFor="username" >Username</Label>
               <Input
                 id="username"
                 type="text"
