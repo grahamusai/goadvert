@@ -135,7 +135,7 @@ export default function LoginPage() {
                 <div className="w-full border-t"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-[#2D7FF9]">Or sign in with</span>
+                <span className="bg-[#1a2646] px-2 text-white">Or sign in with</span>
               </div>
             </div>
 

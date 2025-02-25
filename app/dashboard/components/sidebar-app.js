@@ -100,7 +100,7 @@ export function UserSidebar() {
                   <a href="/dashboard/new">
                     <div className=" flex items-center text-slate-300 ">
                       <FaClipboardList />
-                      <h2 className="pl-3">Other Listing</h2>
+                      <h2 className="pl-3">General Listing</h2>
                     </div>
                   </a>
                 </PopoverContent>

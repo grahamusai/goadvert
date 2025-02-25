@@ -245,10 +245,10 @@ export default function Dashboard() {
   };
 
   return (
-    <>
-      <Navbar />
+    <div >
+      < Navbar />
       <UserSidebar />
-      <div className="flex max-w-6xl mx-auto ml-64">
+      <div className="flex max-w-6xl mx-auto ml-64 ">
         <main className="flex-1 p-6">
           <div className=" flex gap-5">
             <div className="w-full md:w-1/2">
@@ -260,6 +260,6 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
-    </>
+    </div>
   )
 }

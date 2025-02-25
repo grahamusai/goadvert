@@ -14,7 +14,6 @@ import { FloatingNavbar } from "./components/floatingNav";
 export default function Home() {
   return (
     <div className="overflow-hidden">
-
       <Navbar />
       <Header />
       <CategoryTabs />

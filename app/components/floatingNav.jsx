@@ -10,10 +10,7 @@ export function FloatingNavbar() {
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
-      {/* Dashboard Label */}
-      
 
-      {/* Navigation Bar */}
       <nav className="bg-white rounded-full px-6 py-4 shadow-lg flex items-center gap-8">
         <Link
           href="/dashboard"

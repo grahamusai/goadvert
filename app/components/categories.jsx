@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { motion } from "motion/react"
 import {
   Building2,
   Car,
@@ -22,10 +23,15 @@ import {
 function CategoryIcon({ icon, label }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <Link href={`/category/${label}`}>
-        <div className="w-16 h-16 md:w-20 shadow-lg shadow-blue-200 md:h-20 rounded-full bg-blue-600 flex items-center justify-center text-white">
+      <Link href={`/category/${label.toLowerCase().replace(/\s+/g, '-')}`} >
+        <motion.div
+          whileHover={{
+            scale: 1.2,
+            transition: { duration: 0.1 }
+          }}
+          className="w-16 h-16 md:w-20 shadow-lg shadow-blue-200 md:h-20 rounded-full bg-blue-600 flex items-center justify-center text-white">
           {icon}
-        </div>
+        </motion.div>
       </Link>
       <span className="text-xs md:text-sm text-center font-medium">{label}</span>
     </div>

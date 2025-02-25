@@ -53,7 +53,6 @@ export default function Listings() {
       [itemId]: ((prev[itemId] || 0) - 1 + maxLength) % maxLength
     }));
   };
-
   const fetchUserContent = async () => {
     try {
       const userId = pb.authStore.model.id
@@ -72,6 +71,9 @@ export default function Listings() {
         })
       ]);
 
+      // Log properties data to console
+      console.log('Properties data:', properties.items);
+
       setUserContent({
         posts: posts.items,
         properties: properties.items,
@@ -82,18 +84,15 @@ export default function Listings() {
       toast.error('Failed to fetch your content')
     }
   }
-
   useEffect(() => {
     if (pb.authStore.isValid) {
       fetchUserContent()
     }
   }, [])
-
   const handleDeleteClick = (collectionName, id) => {
     setDeleteItem({ collectionName, id })
     setIsDeleteModalOpen(true)
   }
-
   const handleDeleteConfirm = async () => {
     try {
       await pb.collection(deleteItem.collectionName).delete(deleteItem.id)
@@ -105,7 +104,6 @@ export default function Listings() {
       toast.error('Failed to delete item')
     }
   }
-
   const handleEdit = (item, collectionName) => {
     setEditItem({ ...item, collectionName })
     setEditForm({
@@ -115,7 +113,6 @@ export default function Listings() {
     })
     setIsEditModalOpen(true)
   }
-
   const handleUpdate = async () => {
     try {
       await pb.collection(editItem.collectionName).update(editItem.id, {
@@ -131,7 +128,6 @@ export default function Listings() {
       toast.error('Failed to update item')
     }
   }
-
   const handleArchive = async (collectionName, id) => {
     try {
       await pb.collection(collectionName).update(id, {
@@ -144,7 +140,6 @@ export default function Listings() {
       toast.error('Failed to archive item')
     }
   }
-
   const renderContent = (items, collectionName) => {
     return items.map((item) => {
       const images = item.image_urls ? JSON.parse(item.image_urls) : (item.image ? [`${process.env.NEXT_PUBLIC_POCKETBASE_URL}/api/files/${item.collectionId}/${item.id}/${item.image}`] : []);
@@ -240,7 +235,6 @@ export default function Listings() {
       );
     });
   };
-
   return (
     <>
       <Navbar />
@@ -251,21 +245,21 @@ export default function Listings() {
           <div className="space-y-8">
             <section>
               <h1 className="text-2xl font-bold mb-6">My Posts</h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {renderContent(userContent.posts, 'posts')}
               </div>
             </section>
 
             <section>
               <h1 className="text-2xl font-bold mb-6">My Properties</h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {renderContent(userContent.properties, 'properties')}
               </div>
             </section>
 
             <section>
               <h1 className="text-2xl font-bold mb-6">My Cars</h1>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {renderContent(userContent.cars, 'cars')}
               </div>
             </section>

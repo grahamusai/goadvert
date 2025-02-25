@@ -1,8 +1,9 @@
 "use client"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import pb from '../../../lib/pocketbase';
 import supabase from '../../../lib/supabase';
 import { UserSidebar } from '../components/sidebar-app';
+import { useRouter } from "next/navigation"
 import Navbar from '../../components/navbar';
 
 const LISTING_TYPES = [
@@ -25,6 +26,14 @@ const LISTING_TYPES = [
 ];
 
 export default function New() {
+
+  const router = useRouter();
+  useEffect(() => {
+    if (!pb.authStore.isValid) {
+      router.push('/login');
+    }
+  }, [router]);
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -109,9 +118,8 @@ export default function New() {
   };
 
   return (
-    <>
+    <div>
       <Navbar />
-
       <UserSidebar />
       <div className="flex">
         <main className="flex-1 p-6">
@@ -220,6 +228,6 @@ export default function New() {
           </div>
         </main>
       </div>
-    </>
+    </div>
   );
 }
