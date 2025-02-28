@@ -5,16 +5,34 @@ import { BiCategory } from "react-icons/bi";
 import { MdPhonelink } from "react-icons/md";
 import { GoFileDirectoryFill } from "react-icons/go";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs"
-import PropertyCard from "./propertyCard";
+import PostsCard from "./postsCard";
 import Categories from "./categories";
 import CarCard from "./carCard";
 import { GiAmpleDress } from "react-icons/gi";
 import PropertyListingCard from "./propertyListingCard";
 import { useEffect, useState } from "react";
-
+import pb from '../../lib/pocketbase';
 export function CategoryTabs() {
+  const [posts, setPosts] = useState([]);
 
 
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const records = await pb.collection('posts').getList(1, 50, {
+          sort: '-created',
+        });
+        setPosts(records.items);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    }
+    fetchPosts();
+  }, []);
+
+  const filterPostsByType = (type) => {
+    return posts.filter(post => post.type.toLowerCase() === type.toLowerCase());
+  };
 
   return (
     <>
@@ -26,22 +44,43 @@ export function CategoryTabs() {
           <TabsTrigger value="hotels"><LuHotel />&nbsp;Hotels</TabsTrigger>
           <TabsTrigger value="jobs"><LuBriefcase />&nbsp;Jobs</TabsTrigger>
           <TabsTrigger value="electronics"><MdPhonelink />&nbsp;Electronics</TabsTrigger>
-          <TabsTrigger value="logistics"><GiAmpleDress />&nbsp;Clothing</TabsTrigger>
+          <TabsTrigger value="clothing"><GiAmpleDress />&nbsp;Clothing</TabsTrigger>
           <TabsTrigger value="business"><GoFileDirectoryFill />&nbsp;Business Directory</TabsTrigger>
           <TabsTrigger value="all" className="w-full bg-blue-500 text-white"><BiCategory />&nbsp;All categories</TabsTrigger>
         </TabsList>
 
         {/* Content */}
-
         <TabsContent value="properties" className="">
           <PropertyListingCard />
         </TabsContent>
-        <TabsContent value="cars"><CarCard /></TabsContent>
-        <TabsContent value="logistics">Logistics</TabsContent>
-        <TabsContent value="hotels">Hotels</TabsContent>
-        <TabsContent value="jobs">Jobs</TabsContent>
-        <TabsContent value="electronics">Electronics</TabsContent>
-        <TabsContent value="business">Business Directory</TabsContent>
+        <TabsContent value="cars" className="">
+          <CarCard />
+        </TabsContent>
+        <TabsContent value="hotel" className="">
+          {filterPostsByType('hotel').map((post) => (
+            <PostsCard key={post.id} {...post} />
+          ))}
+        </TabsContent>
+        <TabsContent value="jobs" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filterPostsByType('jobs').map((post) => (
+            <PostsCard key={post.id} {...post} />
+          ))}
+        </TabsContent>
+        <TabsContent value="electronics" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filterPostsByType('electronics').map((post) => (
+            <PostsCard key={post.id} {...post} />
+          ))}
+        </TabsContent>
+        <TabsContent value="clothing" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filterPostsByType('clothing').map((post) => (
+            <PostsCard key={post.id} {...post} />
+          ))}
+        </TabsContent>
+        <TabsContent value="business" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filterPostsByType('business').map((post) => (
+            <PostsCard key={post.id} {...post} />
+          ))}
+        </TabsContent>
         <TabsContent value="all" className="">
           <Categories />
         </TabsContent>
@@ -50,6 +89,5 @@ export function CategoryTabs() {
         <Categories />
       </div>
     </>
-  )
+  );
 }
-

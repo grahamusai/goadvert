@@ -69,7 +69,7 @@ export default function New() {
             }
 
             let imageUrls = [];
-            
+
             if (images.length > 0) {
                 // Upload all images to Supabase Storage
                 for (const image of images) {
@@ -87,7 +87,7 @@ export default function New() {
                     const { data: { publicUrl } } = supabase.storage
                         .from('property-images')
                         .getPublicUrl(fileName);
-                    
+
                     imageUrls.push(publicUrl);
                 }
             }
@@ -125,7 +125,7 @@ export default function New() {
             });
             setImages([]);
             setPreviews([]);
-            
+
         } catch (err) {
             setError(err.message);
         } finally {
