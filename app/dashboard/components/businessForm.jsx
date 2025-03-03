@@ -29,6 +29,46 @@ export default function BusinessListingForm() {
     event.preventDefault()
     // Handle form submission here
     console.log("Form submitted")
+    setLoading(true)
+    setError('')
+    setSuccess(false)
+    try {
+      const authData = pb.authStore.model
+      if (!authData) {
+        throw new Error("You must be logged in to create a business")
+      }
+      let imagesUrl = []
+      if (imagesUrl.length > 0) {
+        // Upload all images to Supabase Storage
+        for (const image of images){
+          const fileExt = image.name.split('.').pop();
+          const fileName = `${Math.random()}.${fileExt}`;
+          const { data, error: uploadError } = await supabase.storage.from('business-images').upload(fileName, image);
+          if (uploadError) {
+            throw new Error('Error uploading image: ' + uploadError.message);
+          }
+          // Get the public URL
+          const { data: { publicUrl } } = supabase.storage.from('business-images').getPublicUrl(fileName);
+          imagesUrl.push(publicUrl);
+        }
+      }
+      // Create for data for Pocketbase
+      const businessData = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('type', formData.type);
+      formDataToSend.append('price', formData.price);
+      formDataToSend.append('city', formData.city);
+      formDataToSend.append('country', formData.country);
+      formDataToSend.append('term', formData.term);
+      formDataToSend.append('images', imagesUrl);
+      if (imageUrls.length > 0) {
+        formDataToSend.append('images', JSON.stringify(imageUrls));
+        formDataToSend.append('images', JSON.stringify(imageUrls));
+      }
+      formDataToSend.append('operating_hours', JSON.stringify(operatingHours));
+      const { data, error } = await pb.collection('businesses').create(businessData);
+    }
   }
 
   return (

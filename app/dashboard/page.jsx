@@ -9,9 +9,7 @@ import { Button } from "../../components/ui/button"
 import Image from "next/image"
 import pb from "../../lib/pocketbase"
 import { toast } from "sonner"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../../components/ui/dialog"
-import { Input } from "../../components/ui/input"
-import { Textarea } from "../../components/ui/textarea"
+import { MobileSidebar } from "./components/mobile-sidebar"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
 import { Archive } from "lucide-react"
 import Chart from "./components/chart"
@@ -247,8 +245,15 @@ export default function Dashboard() {
   return (
     <div >
       < Navbar />
-      <UserSidebar />
-      <div className="flex max-w-6xl mx-auto ml-64 ">
+      <div className="hidden md:block">
+        <UserSidebar />
+      </div>
+      <div className="md:hidden">
+        <MobileSidebar />
+      </div>
+      
+      
+      <div className="hidden md:flex max-w-6xl mx-auto ml-64 ">
         <main className="flex-1 p-6">
           <div className=" flex gap-5">
             <div className="w-full md:w-1/2">

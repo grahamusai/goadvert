@@ -36,7 +36,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="z-50 flex h-24 items-center pl-16 max-w-6xl ml-60 justify-between gap-4  px-4 md:px-6">
+    <nav className="z-50 flex h-24 items-center md:pl-16 max-w-6xl md:ml-60 justify-between gap-4 px-4 md:px-6">
       <div className="flex items-center gap-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-14 w-14 overflow-hidden  ">
@@ -49,7 +49,8 @@ export default function Navbar() {
             />
           </div>
         </Link>
-        <DropdownMenu className="hidden md:block">
+        <div className='hidden md:block'>
+          <DropdownMenu className="hidden md:block">
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="gap-2">
               EN
@@ -62,6 +63,7 @@ export default function Navbar() {
             <DropdownMenuItem>French</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
       </div>
       <div className="hidden md:flex max-w-xl flex-1 items-center gap-2 rounded-full border bg-background px-3">
         <Search className="h-4 w-4 text-muted-foreground" />
@@ -86,7 +88,8 @@ export default function Navbar() {
             {/* <MdSupportAgent /> */}
           </Link>
         </div>
-        <DropdownMenu className="hidden md:block">
+        <div className="hidden md:block">
+        <DropdownMenu >
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="sm" className="gap-2">
               <div className="relative h-5 w-5 overflow-hidden rounded-full">
@@ -108,6 +111,7 @@ export default function Navbar() {
             <DropdownMenuItem>CHF</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
         <FaCartShopping />
         <div className="flex items-center gap-2">
           {isLoggedIn ? (
